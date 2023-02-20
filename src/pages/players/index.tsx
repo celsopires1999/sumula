@@ -1,22 +1,18 @@
-import { Layout } from "@/components/Layout";
 import { Button, Theme } from "@mui/material";
 import { GetServerSideProps } from "next";
 
 type PlayersProps = {
   name: string;
-  children: React.ReactNode;
-  currentTheme: Theme;
-  toggle: () => void;
 };
 
-function PlayersPage({ name, currentTheme, toggle }: PlayersProps) {
+function PlayersPage({ name }: PlayersProps) {
   return (
-    <Layout currentTheme={currentTheme} toggle={toggle}>
+    <>
       <div>
         <Button variant="contained">Ok</Button>
       </div>
       {name}
-    </Layout>
+    </>
   );
 }
 

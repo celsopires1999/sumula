@@ -1,3 +1,4 @@
+import { Layout } from "@/components/Layout";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,11 +27,9 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={currentTheme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component
-          {...pageProps}
-          toggle={toggleCurrentTheme}
-          currentTheme={currentTheme}
-        />
+        <Layout toggle={toggleCurrentTheme} currentTheme={currentTheme}>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
     </CacheProvider>
   );
