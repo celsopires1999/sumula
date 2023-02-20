@@ -39,5 +39,7 @@
     "titleBar.inactiveForeground": "#15202b99"
   },
   "peacock.remoteColor": "#61dafb",
-  "jestrunner.jestCommand": "npm run test --"
+  "jestrunner.jestCommand": "npm run test --",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
