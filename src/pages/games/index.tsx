@@ -1,5 +1,6 @@
-function Games() {
-  return <div>Games</div>;
+import { GamesTable } from "../../features/games/components/GamesTable";
+function GamesPage() {
+  return <GamesTable />;
 }
 
-export default Games;
+export default GamesPage;
