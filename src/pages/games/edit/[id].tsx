@@ -1,17 +1,30 @@
 import { Game, GamePayload } from "@/types/Games";
 import { Box, Paper, Typography } from "@mui/material";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { GameForm } from "../../features/games/components/GameForm";
+import { GameForm } from "../../../features/games/components/GameForm";
 import {
   initialState as gameInitialState,
-  useCreateGameMutation,
-} from "../../features/games/GamesSlice";
+  useGetGameQuery,
+  useUpdateGameMutation,
+} from "../../../features/games/GamesSlice";
 
-function GameCreatePage() {
+function GameEditPage() {
+  const router = useRouter();
+
+  const id = router.query.id as any;
+  const result = useGetGameQuery(typeof id === "string" ? { id } : skipToken, {
+    // If the page is not yet generated, router.isFallback will be true
+    // initially until getStaticProps() finishes running
+    skip: router.isFallback,
+  });
+  const { isFetching, data: apiGame } = result;
+
   const { enqueueSnackbar } = useSnackbar();
   const [gameState, setGameState] = useState<Game>(gameInitialState);
-  const [createGame, status] = useCreateGameMutation();
+  const [updateGame, status] = useUpdateGameMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,17 +46,30 @@ function GameCreatePage() {
       host: gameState.host,
       visitor: gameState.visitor,
     };
-    await createGame(gamePayload);
+    await updateGame({ id, gamePayload });
   }
 
   useEffect(() => {
+    if (apiGame) {
+      const game: Game = {
+        id: apiGame.id,
+        date: new Date(apiGame.date),
+        place: apiGame.place,
+        host: apiGame.host,
+        visitor: apiGame.visitor,
+      };
+      setGameState(game);
+    }
+  }, [apiGame]);
+
+  useEffect(() => {
     if (status.isSuccess) {
-      enqueueSnackbar(`Game created successfully`, {
+      enqueueSnackbar(`Game updated successfully`, {
         variant: "success",
       });
     }
     if (status.error) {
-      enqueueSnackbar(`Game not created`, { variant: "error" });
+      enqueueSnackbar(`Game not updated`, { variant: "error" });
     }
   }, [enqueueSnackbar, status.error, status.isSuccess]);
 
@@ -52,7 +78,7 @@ function GameCreatePage() {
       <Paper>
         <Box p={2}>
           <Box mb={2}>
-            <Typography variant="h4">Create Game</Typography>
+            <Typography variant="h4">Edit Game</Typography>
           </Box>
         </Box>
         <GameForm
@@ -60,7 +86,7 @@ function GameCreatePage() {
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleDateChange={handleDateChange}
-          isLoading={status.isLoading}
+          isLoading={isFetching || status.isLoading}
           isDisabled={status.isLoading}
         />
       </Paper>
@@ -68,4 +94,4 @@ function GameCreatePage() {
   );
 }
 
-export default GameCreatePage;
+export default GameEditPage;

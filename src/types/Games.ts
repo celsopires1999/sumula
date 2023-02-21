@@ -6,10 +6,13 @@ export type Game = {
   visitor: string;
 };
 
-export type Result = {
-  data: Game;
+export type GamePayload = {
+  date: string;
+  place: string;
+  host: string;
+  visitor: string;
 };
 
-export type Results = {
-  data: Game[];
-};
+export type Result = Game;
+
+export type Results = Game[];

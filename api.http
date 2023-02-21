@@ -1,0 +1,7 @@
+##################
+###    Games   ###
+##################
+
+### List ###
+GET http://localhost:8000/games
+Content-Type: application/json

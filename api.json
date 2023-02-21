@@ -1,21 +1,54 @@
 {
-  "players": [
+  "places": [
     {
       "id": "1",
-      "name": "John Doe"
+      "name": "7 de Setembro"
     },
     {
       "id": "2",
-      "name": "Mary Doe"
+      "name": "1. de Maio"
     }
   ],
   "games": [
     {
       "id": "1",
       "date": "2023-02-21T10:00:00.000Z",
-      "place": "7 de Setembro",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
       "host": "Boca Boa",
       "visitor": "Banguela"
+    },
+    {
+      "date": "2023-02-21T16:25:17.042Z",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
+      "host": "Boca Boa",
+      "visitor": "Baguela",
+      "id": "eJIO4X4"
+    },
+    {
+      "date": "2023-02-21T16:30:00.000Z",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
+      "host": "Boca Boa",
+      "visitor": "Banguela",
+      "id": "gpj1WK7"
+    },
+    {
+      "date": "2023-02-21T18:02:00.000Z",
+      "place": {
+        "id": "2",
+        "name": "1. de Maio"
+      },
+      "host": "1. de Maio Veteranos",
+      "visitor": "Vai Quem Quer",
+      "id": "35kQTtL"
     }
   ]
 }

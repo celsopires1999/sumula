@@ -40,7 +40,7 @@ export const GameForm = ({
                 name="place"
                 label="Place"
                 value={game.place}
-                disabled={isDisabled}
+                disabled={isDisabled || isLoading}
                 onChange={handleChange}
                 inputProps={{ "data-testid": "place" }}
               />
@@ -52,7 +52,7 @@ export const GameForm = ({
                 name="host"
                 label="Host"
                 value={game.host}
-                disabled={isDisabled}
+                disabled={isDisabled || isLoading}
                 onChange={handleChange}
                 inputProps={{ "data-testid": "host" }}
               />
@@ -64,7 +64,7 @@ export const GameForm = ({
                 name="visitor"
                 label="Visitor"
                 value={game.visitor}
-                disabled={isDisabled}
+                disabled={isDisabled || isLoading}
                 onChange={handleChange}
                 inputProps={{ "data-testid": "visitor" }}
               />
