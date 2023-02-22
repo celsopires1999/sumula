@@ -9,128 +9,30 @@
       "name": "1. de Maio"
     },
     {
-      "name": "Jabaquara",
-      "id": "N3VMXOY"
-    },
-    {
-      "name": "Móoca",
-      "id": "ESHeyGu"
-    },
-    {
-      "name": "Sapopemba",
-      "id": "Wx7ZLw4"
-    },
-    {
-      "name": "Uberlândia",
-      "id": "RN6Cw2S"
-    },
-    {
-      "name": "Botafogo",
-      "id": "nAwpmAU"
-    },
-    {
-      "name": "Fluminense",
-      "id": "mAAOOc7"
-    },
-    {
-      "name": "Vasco",
-      "id": "8LTwrv4"
-    },
-    {
-      "name": "Cozinha",
-      "id": "UIlHVie"
+      "name": "8 de Setembro",
+      "id": "KkIhvqZ"
     }
   ],
   "games": [
     {
-      "date": "2023-02-22T15:44:17.261Z",
+      "date": "2023-02-22T23:54:26.115Z",
       "place": {
-        "id": "",
-        "name": ""
-      },
-      "host": "",
-      "visitor": "",
-      "id": 1
-    },
-    {
-      "date": "2023-02-22T15:44:17.261Z",
-      "place": {
-        "id": "",
-        "name": ""
-      },
-      "host": "",
-      "visitor": "",
-      "id": 2
-    },
-    {
-      "date": "2023-02-22T15:44:17.261Z",
-      "place": {
-        "id": "ESHeyGu",
-        "name": "Móoca"
-      },
-      "host": "",
-      "visitor": "",
-      "id": 3
-    },
-    {
-      "date": "2023-02-22T15:44:17.261Z",
-      "place": {
-        "id": "Wx7ZLw4",
-        "name": "Sapopemba"
+        "id": "1",
+        "name": "7 de Setembro"
       },
       "host": "Boca Boa",
       "visitor": "Banguela",
-      "id": 4
+      "id": 1
     },
     {
-      "date": "2023-02-22T16:02:38.387Z",
+      "date": "2023-02-22T23:54:26.115Z",
       "place": {
-        "id": "",
-        "name": ""
+        "id": "KkIhvqZ",
+        "name": "8 de Setembro"
       },
-      "host": "",
-      "visitor": "",
-      "id": 5
-    },
-    {
-      "date": "2023-02-22T16:02:38.387Z",
-      "place": {
-        "id": "",
-        "name": ""
-      },
-      "host": "",
-      "visitor": "",
-      "id": 6
-    },
-    {
-      "date": "2023-02-22T16:16:20.867Z",
-      "place": {
-        "id": "",
-        "name": ""
-      },
-      "host": "",
-      "visitor": "",
-      "id": 7
-    },
-    {
-      "date": "2023-02-22T16:20:04.295Z",
-      "place": {
-        "id": "",
-        "name": ""
-      },
-      "host": "",
-      "visitor": "",
-      "id": 8
-    },
-    {
-      "date": "2023-02-22T16:35:31.991Z",
-      "place": {
-        "id": "",
-        "name": ""
-      },
-      "host": "",
-      "visitor": "",
-      "id": 9
+      "host": "Boca Boa",
+      "visitor": "Banguela",
+      "id": 2
     }
   ]
 }

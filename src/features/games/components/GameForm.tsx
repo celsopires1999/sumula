@@ -1,6 +1,6 @@
 import { DateTime } from "@/components/DateTime";
 import { PlaceAutocomplete } from "@/features/places/components/PlaceAutocomplete";
-import { Place } from "@/types/Places";
+import { Place, PlacePayload } from "@/types/Places";
 import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
 import "dayjs/locale/pt-br";
 import Link from "next/link";
@@ -8,21 +8,25 @@ import { Game } from "../../../types/Games";
 
 type Props = {
   game: Game;
+  places: Place[];
   isLoading?: boolean;
   isDisabled?: boolean;
   handleDateChange: (value: Date | undefined) => void;
   handlePlaceChange: (value: Place | undefined) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleCreatePlace: (placePayload: PlacePayload) => Promise<Place | undefined>;
 };
 export const GameForm = ({
   game,
+  places,
+  isLoading = false,
+  isDisabled = false,
   handleSubmit,
   handleChange,
   handleDateChange,
-  isLoading = false,
+  handleCreatePlace,
   handlePlaceChange,
-  isDisabled = false,
 }: Props) => {
   return (
     <Box p={2}>
@@ -42,34 +46,36 @@ export const GameForm = ({
               <PlaceAutocomplete
                 id="place"
                 label="Place"
+                places={places}
                 value={game.place}
                 handlePlaceChange={handlePlaceChange}
+                handleCreatePlace={handleCreatePlace}
               />
             </FormControl>
             {/* Host */}
             <FormControl fullWidth>
               <TextField
                 required
-                autoComplete="off"
                 name="host"
                 label="Host"
                 value={game.host}
+                autoComplete="off"
                 disabled={isDisabled || isLoading}
-                onChange={handleChange}
                 inputProps={{ "data-testid": "host" }}
+                onChange={handleChange}
               />
             </FormControl>
             {/* Host */}
             <FormControl fullWidth>
               <TextField
                 required
-                autoComplete="off"
                 name="visitor"
                 label="Visitor"
+                autoComplete="off"
                 value={game.visitor}
                 disabled={isDisabled || isLoading}
-                onChange={handleChange}
                 inputProps={{ "data-testid": "visitor" }}
+                onChange={handleChange}
               />
             </FormControl>
           </Grid>

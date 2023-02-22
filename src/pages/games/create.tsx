@@ -1,5 +1,5 @@
 import { Game, GamePayload } from "@/types/Games";
-import { Place } from "@/types/Places";
+import { Place, PlacePayload } from "@/types/Places";
 import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
@@ -8,11 +8,17 @@ import {
   initialState as gameInitialState,
   useCreateGameMutation,
 } from "../../features/games/GamesSlice";
+import {
+  useCreatePlaceMutation,
+  useGetPlacesQuery,
+} from "../../features/places/PlacesSlice";
 
 function GameCreatePage() {
   const { enqueueSnackbar } = useSnackbar();
+  const { data: places } = useGetPlacesQuery();
+  const [createGame, statusCreateGame] = useCreateGameMutation();
+  const [createPlace, statusCreatePlace] = useCreatePlaceMutation();
   const [gameState, setGameState] = useState<Game>(gameInitialState);
-  const [createGame, status] = useCreateGameMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,16 +50,39 @@ function GameCreatePage() {
     await createGame(gamePayload);
   }
 
+  async function handleCreatePlace(
+    placePayload: PlacePayload
+  ): Promise<Place | undefined> {
+    try {
+      const result = createPlace(placePayload).unwrap();
+      return result;
+    } catch (e) {
+      console.error(e);
+      enqueueSnackbar(`Place not created`, { variant: "error" });
+    }
+  }
+
   useEffect(() => {
-    if (status.isSuccess) {
+    if (statusCreateGame.isSuccess) {
       enqueueSnackbar(`Game created successfully`, {
         variant: "success",
       });
     }
-    if (status.error) {
+    if (statusCreateGame.error) {
       enqueueSnackbar(`Game not created`, { variant: "error" });
     }
-  }, [enqueueSnackbar, status.error, status.isSuccess]);
+  }, [enqueueSnackbar, statusCreateGame.error, statusCreateGame.isSuccess]);
+
+  useEffect(() => {
+    if (statusCreatePlace.isSuccess) {
+      enqueueSnackbar(`Place created successfully`, {
+        variant: "success",
+      });
+    }
+    if (statusCreatePlace.error) {
+      enqueueSnackbar(`Place not created`, { variant: "error" });
+    }
+  }, [enqueueSnackbar, statusCreatePlace.error, statusCreatePlace.isSuccess]);
 
   return (
     <Box>
@@ -65,12 +94,14 @@ function GameCreatePage() {
         </Box>
         <GameForm
           game={gameState}
+          places={places ?? []}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleDateChange={handleDateChange}
           handlePlaceChange={handlePlaceChange}
-          isLoading={status.isLoading}
-          isDisabled={status.isLoading}
+          handleCreatePlace={handleCreatePlace}
+          isLoading={statusCreateGame.isLoading}
+          isDisabled={statusCreateGame.isLoading}
         />
       </Paper>
     </Box>

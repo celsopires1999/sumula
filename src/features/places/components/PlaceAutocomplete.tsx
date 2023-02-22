@@ -11,22 +11,15 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
-import { useSnackbar } from "notistack";
-import {
-  ChangeEvent,
-  FormEvent,
-  HTMLAttributes,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from "react";
-import { useCreatePlaceMutation, useGetPlacesQuery } from "../PlacesSlice";
+import { ChangeEvent, HTMLAttributes, SyntheticEvent, useState } from "react";
 
 export type PlaceAutocompleteProps = {
+  id: string;
   value: Place;
   label: string;
-  id: string;
+  places: Place[];
   handlePlaceChange: (value: Place) => void;
+  handleCreatePlace: (placePayload: PlacePayload) => Promise<Place | undefined>;
 };
 
 type PlaceOptionType = {
@@ -38,14 +31,13 @@ type PlaceOptionType = {
 const filter = createFilterOptions<PlaceOptionType>();
 
 export function PlaceAutocomplete({
+  id,
   value,
   label,
-  id,
+  places,
   handlePlaceChange,
+  handleCreatePlace,
 }: PlaceAutocompleteProps) {
-  const { enqueueSnackbar } = useSnackbar();
-  const { data: places } = useGetPlacesQuery();
-  const [createPlace, status] = useCreatePlaceMutation();
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
     name: "",
@@ -60,15 +52,16 @@ export function PlaceAutocomplete({
         value={value}
         selectOnFocus
         handleHomeEndKeys
+        options={places as PlaceOptionType[]}
         onChange={handleChangeAutocomplete}
         renderInput={handleRenderInputAutocomplete}
-        options={(places as PlaceOptionType[]) || []}
         renderOption={handleRenderOptionAutocomplete}
         filterOptions={handleFilterOptionsAutocomplete}
         getOptionLabel={handleGetOptionLabelAutocomplete}
       />
       <Dialog open={open} onClose={handleCloseDialog}>
-        <form onSubmit={handleSubmitDialog}>
+        {/* <form onSubmit={handleSubmitDialog}> */}
+        <form>
           <DialogTitle>Add a new place</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -81,13 +74,14 @@ export function PlaceAutocomplete({
               label="name"
               margin="dense"
               variant="standard"
+              autoComplete="off"
               value={dialogValue.name}
               onChange={handleChangeDialogName}
             />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button type="submit">Add</Button>
+            <Button onClick={handleSubmitDialog}>Add</Button>
           </DialogActions>
         </form>
       </Dialog>
@@ -172,23 +166,17 @@ export function PlaceAutocomplete({
     toggleOpen(false);
   }
 
-  async function handleSubmitDialog(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function handleSubmitDialog() {
     const placePayload: PlacePayload = {
       name: dialogValue.name,
     };
 
-    try {
-      const result = await createPlace(placePayload).unwrap();
-      handlePlaceChange({
-        id: result.id,
-        name: result.name,
-      });
-      handleCloseDialog();
-    } catch (e) {
-      enqueueSnackbar(`Place not created`, { variant: "error" });
-    }
+    const result = await handleCreatePlace(placePayload);
+    handlePlaceChange({
+      id: result?.id ?? "",
+      name: result?.name ?? "",
+    });
+    handleCloseDialog();
   }
 
   function handleChangeDialogName(
