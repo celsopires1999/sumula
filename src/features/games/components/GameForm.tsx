@@ -3,22 +3,26 @@ import "dayjs/locale/pt-br";
 import Link from "next/link";
 import { Game } from "../../../types/Games";
 import { DateTime } from "@/components/DateTime";
+import { Place } from "@/types/Places";
+import PlaceAutocomplete from "@/features/places/components/PlaceAutocomplete";
 
 type Props = {
   game: Game;
-  isDisabled?: boolean;
   isLoading?: boolean;
+  isDisabled?: boolean;
+  handleDateChange: (value: Date | undefined) => void;
+  handlePlaceChange: (value: Place | undefined) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDateChange: (value: Date | undefined) => void;
 };
 export const GameForm = ({
   game,
-  isDisabled = false,
-  isLoading = false,
   handleSubmit,
   handleChange,
   handleDateChange,
+  isLoading = false,
+  handlePlaceChange,
+  isDisabled = false,
 }: Props) => {
   return (
     <Box p={2}>
@@ -35,7 +39,12 @@ export const GameForm = ({
             </FormControl>
             {/* Place */}
             <FormControl fullWidth>
-              <TextField
+              <PlaceAutocomplete
+                value={game.place}
+                label="Place"
+                handlePlaceChange={handlePlaceChange}
+              />
+              {/* <TextField
                 required
                 name="place"
                 label="Place"
@@ -43,7 +52,7 @@ export const GameForm = ({
                 disabled={isDisabled || isLoading}
                 onChange={handleChange}
                 inputProps={{ "data-testid": "place" }}
-              />
+              /> */}
             </FormControl>
             {/* Host */}
             <FormControl fullWidth>

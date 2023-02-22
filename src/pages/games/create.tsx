@@ -1,4 +1,5 @@
 import { Game, GamePayload } from "@/types/Games";
+import { Place } from "@/types/Places";
 import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
@@ -23,6 +24,13 @@ function GameCreatePage() {
       return;
     }
     setGameState({ ...gameState, ...{ date: value } });
+  };
+
+  const handlePlaceChange = (value: Place | undefined) => {
+    if (!value) {
+      return;
+    }
+    setGameState({ ...gameState, ...{ place: value } });
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -60,6 +68,7 @@ function GameCreatePage() {
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleDateChange={handleDateChange}
+          handlePlaceChange={handlePlaceChange}
           isLoading={status.isLoading}
           isDisabled={status.isLoading}
         />

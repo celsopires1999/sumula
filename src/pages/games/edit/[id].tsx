@@ -1,4 +1,5 @@
 import { Game, GamePayload } from "@/types/Games";
+import { Place } from "@/types/Places";
 import { Box, Paper, Typography } from "@mui/material";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/router";
@@ -36,6 +37,13 @@ function GameEditPage() {
       return;
     }
     setGameState({ ...gameState, ...{ date: value } });
+  };
+
+  const handlePlaceChange = (value: Place | undefined) => {
+    if (!value) {
+      return;
+    }
+    setGameState({ ...gameState, ...{ place: value } });
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -86,6 +94,7 @@ function GameEditPage() {
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleDateChange={handleDateChange}
+          handlePlaceChange={handlePlaceChange}
           isLoading={isFetching || status.isLoading}
           isDisabled={status.isLoading}
         />
