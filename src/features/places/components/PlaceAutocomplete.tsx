@@ -17,6 +17,7 @@ import {
   FormEvent,
   HTMLAttributes,
   SyntheticEvent,
+  useEffect,
   useState,
 } from "react";
 import { useCreatePlaceMutation, useGetPlacesQuery } from "../PlacesSlice";
@@ -24,133 +25,44 @@ import { useCreatePlaceMutation, useGetPlacesQuery } from "../PlacesSlice";
 export type PlaceAutocompleteProps = {
   value: Place;
   label: string;
+  id: string;
   handlePlaceChange: (value: Place) => void;
 };
 
-const filter = createFilterOptions<SupportPlace>();
+type PlaceOptionType = {
+  inputValue?: string;
+  id?: string;
+  name: string;
+};
 
-export default function PlaceAutocomplete({
+const filter = createFilterOptions<PlaceOptionType>();
+
+export function PlaceAutocomplete({
   value,
   label,
+  id,
   handlePlaceChange,
 }: PlaceAutocompleteProps) {
   const { enqueueSnackbar } = useSnackbar();
   const { data: places } = useGetPlacesQuery();
-  const [createPlace] = useCreatePlaceMutation();
-  // const [place, setPlace] = useState<Places | null>(null);
-
+  const [createPlace, status] = useCreatePlaceMutation();
   const [open, toggleOpen] = useState(false);
-  const handleCloseDialog = () => {
-    setDialogValue({
-      name: "",
-    });
-    toggleOpen(false);
-  };
-
   const [dialogValue, setDialogValue] = useState({
     name: "",
   });
 
-  const handleSubmitDialog = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const placePayload: PlacePayload = {
-      name: dialogValue.name,
-    };
-
-    try {
-      const result = await createPlace(placePayload).unwrap();
-      handlePlaceChange({
-        id: result.id,
-        name: result.name,
-      });
-      handleCloseDialog();
-    } catch (e) {
-      enqueueSnackbar(`Place not created`, { variant: "error" });
-    }
-  };
-
-  const handleChangeAutocomplete = (
-    _event: SyntheticEvent<Element, Event>,
-    newValue: string | SupportPlace | null
-  ) => {
-    if (typeof newValue === "string") {
-      // timeout to avoid instant validation of the dialog's form.
-      setTimeout(() => {
-        toggleOpen(true);
-        setDialogValue({
-          name: newValue,
-        });
-      });
-    } else if (newValue && newValue.inputValue) {
-      toggleOpen(true);
-      setDialogValue({
-        name: newValue.inputValue,
-      });
-    } else {
-      handlePlaceChange({
-        id: newValue?.id || "",
-        name: newValue?.name || "",
-      });
-    }
-  };
-
-  const handleFilterOptionsAutocomplete = (
-    options: SupportPlace[],
-    params: FilterOptionsState<SupportPlace>
-  ) => {
-    const filtered = filter(options, params);
-
-    if (params.inputValue !== "") {
-      filtered.push({
-        inputValue: params.inputValue,
-        name: `Add "${params.inputValue}"`,
-      });
-    }
-
-    return filtered;
-  };
-
-  const handleGetOptionLabelAutocomplete = (option: string | SupportPlace) => {
-    // e.g value selected with enter, right from the input
-    if (typeof option === "string") {
-      return option;
-    }
-    if (option.inputValue) {
-      return option.inputValue;
-    }
-    return option.name;
-  };
-
-  const handleRenderOptionAutocomplete = (
-    props: HTMLAttributes<HTMLLIElement>,
-    option: SupportPlace
-  ) => <li {...props}>{option.name}</li>;
-
-  const handleRenderInputAutocomplete = (
-    params: AutocompleteRenderInputParams
-  ) => <TextField {...params} label="Place" required />;
-
-  const handleChangeDialogName = (
-    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) =>
-    setDialogValue({
-      ...dialogValue,
-      name: event.target.value,
-    });
-
   return (
     <>
       <Autocomplete
+        id={id}
         freeSolo
         clearOnBlur
         value={value}
         selectOnFocus
         handleHomeEndKeys
-        options={places ?? []}
-        id="place-autocomplete"
         onChange={handleChangeAutocomplete}
         renderInput={handleRenderInputAutocomplete}
+        options={(places as PlaceOptionType[]) || []}
         renderOption={handleRenderOptionAutocomplete}
         filterOptions={handleFilterOptionsAutocomplete}
         getOptionLabel={handleGetOptionLabelAutocomplete}
@@ -181,10 +93,112 @@ export default function PlaceAutocomplete({
       </Dialog>
     </>
   );
-}
 
-interface SupportPlace {
-  inputValue?: string;
-  id?: string;
-  name: string;
+  //#region     Autocomplete
+
+  function handleRenderOptionAutocomplete(
+    props: HTMLAttributes<HTMLLIElement>,
+    option: PlaceOptionType
+  ) {
+    return <li {...props}>{option.name}</li>;
+  }
+
+  function handleRenderInputAutocomplete(
+    params: AutocompleteRenderInputParams
+  ) {
+    return <TextField {...params} label={label} required />;
+  }
+
+  function handleChangeAutocomplete(
+    _event: SyntheticEvent<Element, Event>,
+    newValue: string | PlaceOptionType | null
+  ) {
+    if (typeof newValue === "string") {
+      // timeout to avoid instant validation of the dialog's form.
+      setTimeout(() => {
+        toggleOpen(true);
+        setDialogValue({
+          name: newValue,
+        });
+      });
+    } else if (newValue && newValue.inputValue) {
+      toggleOpen(true);
+      setDialogValue({
+        name: newValue.inputValue,
+      });
+    } else {
+      handlePlaceChange({
+        id: newValue?.id || "",
+        name: newValue?.name || "",
+      });
+    }
+  }
+
+  function handleFilterOptionsAutocomplete(
+    options: PlaceOptionType[],
+    params: FilterOptionsState<PlaceOptionType>
+  ) {
+    const filtered = filter(options, params);
+
+    if (params.inputValue !== "") {
+      filtered.push({
+        inputValue: params.inputValue,
+        name: `Add "${params.inputValue}"`,
+      });
+    }
+
+    return filtered;
+  }
+
+  function handleGetOptionLabelAutocomplete(option: string | PlaceOptionType) {
+    // e.g value selected with enter, right from the input
+    if (typeof option === "string") {
+      return option;
+    }
+    if (option.inputValue) {
+      return option.inputValue;
+    }
+    return option.name;
+  }
+
+  //#endregion  Autocomplete
+
+  //#region     Dialog
+
+  function handleCloseDialog() {
+    setDialogValue({
+      name: "",
+    });
+    toggleOpen(false);
+  }
+
+  async function handleSubmitDialog(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const placePayload: PlacePayload = {
+      name: dialogValue.name,
+    };
+
+    try {
+      const result = await createPlace(placePayload).unwrap();
+      handlePlaceChange({
+        id: result.id,
+        name: result.name,
+      });
+      handleCloseDialog();
+    } catch (e) {
+      enqueueSnackbar(`Place not created`, { variant: "error" });
+    }
+  }
+
+  function handleChangeDialogName(
+    event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) {
+    setDialogValue({
+      ...dialogValue,
+      name: event.target.value,
+    });
+  }
+
+  //#endregion  Dialog
 }

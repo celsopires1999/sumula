@@ -9,145 +9,128 @@
       "name": "1. de Maio"
     },
     {
-      "name": "Boca Boa",
-      "id": "zixKUoT"
+      "name": "Jabaquara",
+      "id": "N3VMXOY"
     },
     {
-      "name": "Araraquara",
-      "id": "6dENXDQ"
+      "name": "Móoca",
+      "id": "ESHeyGu"
     },
     {
-      "name": "Stuttgart",
-      "id": "h0ddwRv"
-    },
-    {
-      "name": "Alemanha",
-      "id": "-vaiq_0"
-    },
-    {
-      "name": "Groelândia",
-      "id": "z8SBeJJ"
+      "name": "Sapopemba",
+      "id": "Wx7ZLw4"
     },
     {
       "name": "Uberlândia",
-      "id": "l9ooX1C"
+      "id": "RN6Cw2S"
     },
     {
-      "name": "Rio Grande do Sul",
-      "id": "qAGJCCr"
+      "name": "Botafogo",
+      "id": "nAwpmAU"
+    },
+    {
+      "name": "Fluminense",
+      "id": "mAAOOc7"
+    },
+    {
+      "name": "Vasco",
+      "id": "8LTwrv4"
+    },
+    {
+      "name": "Cozinha",
+      "id": "UIlHVie"
     }
   ],
   "games": [
     {
-      "id": "1",
-      "date": "2023-02-21T10:00:00.000Z",
+      "date": "2023-02-22T15:44:17.261Z",
       "place": {
-        "id": "1",
-        "name": "7 de Setembro"
-      },
-      "host": "Boca Boa",
-      "visitor": "Banguela"
-    },
-    {
-      "date": "2023-02-21T16:25:17.042Z",
-      "place": {
-        "id": "1",
-        "name": "7 de Setembro"
-      },
-      "host": "Boca Boa",
-      "visitor": "Baguela",
-      "id": "eJIO4X4"
-    },
-    {
-      "date": "2023-02-21T16:30:00.000Z",
-      "place": {
-        "id": "1",
-        "name": "7 de Setembro"
-      },
-      "host": "Boca Boa",
-      "visitor": "Banguela",
-      "id": "gpj1WK7"
-    },
-    {
-      "date": "2023-02-21T18:02:00.000Z",
-      "place": {
-        "id": "2",
-        "name": "1. de Maio"
-      },
-      "host": "1. de Maio Veteranos",
-      "visitor": "Vai Quem Quer",
-      "id": "35kQTtL"
-    },
-    {
-      "date": "2023-02-22T00:19:03.663Z",
-      "place": "",
-      "host": "",
-      "visitor": "",
-      "id": "ngcIV3P"
-    },
-    {
-      "date": "2023-02-22T00:30:21.071Z",
-      "place": {
-        "id": "-vaiq_0",
-        "name": "Alemanha"
+        "id": "",
+        "name": ""
       },
       "host": "",
       "visitor": "",
-      "id": "QD3Fk1P"
+      "id": 1
     },
     {
-      "date": "2023-02-22T00:46:37.503Z",
+      "date": "2023-02-22T15:44:17.261Z",
       "place": {
-        "id": "1",
-        "name": "7 de Setembro"
+        "id": "",
+        "name": ""
+      },
+      "host": "",
+      "visitor": "",
+      "id": 2
+    },
+    {
+      "date": "2023-02-22T15:44:17.261Z",
+      "place": {
+        "id": "ESHeyGu",
+        "name": "Móoca"
+      },
+      "host": "",
+      "visitor": "",
+      "id": 3
+    },
+    {
+      "date": "2023-02-22T15:44:17.261Z",
+      "place": {
+        "id": "Wx7ZLw4",
+        "name": "Sapopemba"
       },
       "host": "Boca Boa",
       "visitor": "Banguela",
-      "id": "QGfcD76"
+      "id": 4
     },
     {
-      "date": "2023-02-22T00:55:35.676Z",
+      "date": "2023-02-22T16:02:38.387Z",
       "place": {
-        "id": "zixKUoT",
-        "name": "Boca Boa"
+        "id": "",
+        "name": ""
       },
-      "host": "Boca Boa",
-      "visitor": "Stuttgart",
-      "id": "05Hvm5K"
+      "host": "",
+      "visitor": "",
+      "id": 5
     },
     {
-      "date": "2023-02-22T00:55:35.676Z",
+      "date": "2023-02-22T16:02:38.387Z",
       "place": {
-        "id": "zixKUoT",
-        "name": "Boca Boa"
+        "id": "",
+        "name": ""
       },
-      "host": "Boca Boa",
-      "visitor": "Stuttgart",
-      "id": "UBDXkjP"
+      "host": "",
+      "visitor": "",
+      "id": 6
     },
     {
-      "date": "2023-02-22T00:55:35.676Z",
+      "date": "2023-02-22T16:16:20.867Z",
       "place": {
-        "id": "l9ooX1C",
-        "name": "Uberlândia"
+        "id": "",
+        "name": ""
       },
-      "host": "Boca Boa",
-      "visitor": "Stuttgart",
-      "id": "Zu-Enot"
+      "host": "",
+      "visitor": "",
+      "id": 7
     },
     {
-      "date": "2023-03-07T21:05:00.000Z",
-      "id": "Ag5Uus3"
-    },
-    {
-      "date": "2023-03-07T21:05:00.000Z",
+      "date": "2023-02-22T16:20:04.295Z",
       "place": {
-        "id": "qAGJCCr",
-        "name": "Rio Grande do Sul"
+        "id": "",
+        "name": ""
       },
-      "host": "Boca Boa",
-      "visitor": "Banguela",
-      "id": "-qDLxpW"
+      "host": "",
+      "visitor": "",
+      "id": 8
+    },
+    {
+      "date": "2023-02-22T16:35:31.991Z",
+      "place": {
+        "id": "",
+        "name": ""
+      },
+      "host": "",
+      "visitor": "",
+      "id": 9
     }
   ]
 }

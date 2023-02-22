@@ -3,7 +3,13 @@ import { apiSlice } from "../api/apiSlice";
 
 const endpointUrl = "/games";
 
-export const initialState: Game = {} as Game;
+export const initialState: Game = {
+  id: "",
+  date: new Date(),
+  place: { id: "", name: "" },
+  host: "",
+  visitor: "",
+};
 
 function getGames() {
   return `${endpointUrl}`;

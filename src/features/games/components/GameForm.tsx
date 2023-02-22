@@ -1,10 +1,10 @@
+import { DateTime } from "@/components/DateTime";
+import { PlaceAutocomplete } from "@/features/places/components/PlaceAutocomplete";
+import { Place } from "@/types/Places";
 import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
 import "dayjs/locale/pt-br";
 import Link from "next/link";
 import { Game } from "../../../types/Games";
-import { DateTime } from "@/components/DateTime";
-import { Place } from "@/types/Places";
-import PlaceAutocomplete from "@/features/places/components/PlaceAutocomplete";
 
 type Props = {
   game: Game;
@@ -40,24 +40,17 @@ export const GameForm = ({
             {/* Place */}
             <FormControl fullWidth>
               <PlaceAutocomplete
-                value={game.place}
+                id="place"
                 label="Place"
+                value={game.place}
                 handlePlaceChange={handlePlaceChange}
               />
-              {/* <TextField
-                required
-                name="place"
-                label="Place"
-                value={game.place}
-                disabled={isDisabled || isLoading}
-                onChange={handleChange}
-                inputProps={{ "data-testid": "place" }}
-              /> */}
             </FormControl>
             {/* Host */}
             <FormControl fullWidth>
               <TextField
                 required
+                autoComplete="off"
                 name="host"
                 label="Host"
                 value={game.host}
@@ -70,6 +63,7 @@ export const GameForm = ({
             <FormControl fullWidth>
               <TextField
                 required
+                autoComplete="off"
                 name="visitor"
                 label="Visitor"
                 value={game.visitor}
