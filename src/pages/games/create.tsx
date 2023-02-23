@@ -3,15 +3,15 @@ import { Place, PlacePayload } from "@/types/Places";
 import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { GameForm } from "../../features/games/components/GameForm";
+import { GameForm } from "@/features/games/components/GameForm";
 import {
   initialState as gameInitialState,
   useCreateGameMutation,
-} from "../../features/games/GamesSlice";
+} from "@/features/games/GamesSlice";
 import {
   useCreatePlaceMutation,
   useGetPlacesQuery,
-} from "../../features/places/PlacesSlice";
+} from "@/features/places/PlacesSlice";
 
 function GameCreatePage() {
   const { enqueueSnackbar } = useSnackbar();

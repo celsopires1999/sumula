@@ -1,16 +1,20 @@
+import { GameForm } from "@/features/games/components/GameForm";
+import {
+  initialState as gameInitialState,
+  useGetGameQuery,
+  useUpdateGameMutation,
+} from "@/features/games/GamesSlice";
+import {
+  useCreatePlaceMutation,
+  useGetPlacesQuery,
+} from "@/features/places/PlacesSlice";
 import { Game, GamePayload } from "@/types/Games";
-import { Place } from "@/types/Places";
+import { Place, PlacePayload } from "@/types/Places";
 import { Box, Paper, Typography } from "@mui/material";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { GameForm } from "../../../features/games/components/GameForm";
-import {
-  initialState as gameInitialState,
-  useGetGameQuery,
-  useUpdateGameMutation,
-} from "../../../features/games/GamesSlice";
 
 function GameEditPage() {
   const router = useRouter();
@@ -24,8 +28,10 @@ function GameEditPage() {
   const { isFetching, data: apiGame } = result;
 
   const { enqueueSnackbar } = useSnackbar();
+  const { data: places } = useGetPlacesQuery();
   const [gameState, setGameState] = useState<Game>(gameInitialState);
-  const [updateGame, status] = useUpdateGameMutation();
+  const [updateGame, statusUpdateGame] = useUpdateGameMutation();
+  const [createPlace, statusCreatePlace] = useCreatePlaceMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,6 +63,18 @@ function GameEditPage() {
     await updateGame({ id, gamePayload });
   }
 
+  async function handleCreatePlace(
+    placePayload: PlacePayload
+  ): Promise<Place | undefined> {
+    try {
+      const result = createPlace(placePayload).unwrap();
+      return result;
+    } catch (e) {
+      console.error(e);
+      enqueueSnackbar(`Place not created`, { variant: "error" });
+    }
+  }
+
   useEffect(() => {
     if (apiGame) {
       const game: Game = {
@@ -71,15 +89,26 @@ function GameEditPage() {
   }, [apiGame]);
 
   useEffect(() => {
-    if (status.isSuccess) {
+    if (statusUpdateGame.isSuccess) {
       enqueueSnackbar(`Game updated successfully`, {
         variant: "success",
       });
     }
-    if (status.error) {
+    if (statusUpdateGame.error) {
       enqueueSnackbar(`Game not updated`, { variant: "error" });
     }
-  }, [enqueueSnackbar, status.error, status.isSuccess]);
+  }, [enqueueSnackbar, statusUpdateGame.error, statusUpdateGame.isSuccess]);
+
+  useEffect(() => {
+    if (statusCreatePlace.isSuccess) {
+      enqueueSnackbar(`Place created successfully`, {
+        variant: "success",
+      });
+    }
+    if (statusCreatePlace.error) {
+      enqueueSnackbar(`Place not created`, { variant: "error" });
+    }
+  }, [enqueueSnackbar, statusCreatePlace.error, statusCreatePlace.isSuccess]);
 
   return (
     <Box>
@@ -91,12 +120,14 @@ function GameEditPage() {
         </Box>
         <GameForm
           game={gameState}
+          places={places ?? []}
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleDateChange={handleDateChange}
           handlePlaceChange={handlePlaceChange}
-          isLoading={isFetching || status.isLoading}
-          isDisabled={status.isLoading}
+          handleCreatePlace={handleCreatePlace}
+          isLoading={isFetching || statusUpdateGame.isLoading}
+          isDisabled={statusUpdateGame.isLoading}
         />
       </Paper>
     </Box>
