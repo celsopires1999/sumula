@@ -1,5 +1,5 @@
-import { Game, GamePayload } from "@/types/Games";
-import { Place, PlacePayload } from "@/types/Places";
+import { Game, GamePayload } from "@/types/Game";
+import { Place, PlacePayload } from "@/types/Place";
 import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";

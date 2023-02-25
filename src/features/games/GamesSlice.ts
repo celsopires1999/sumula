@@ -1,4 +1,4 @@
-import { Game, GamePayload, Result, Results } from "../../types/Games";
+import { Game, GamePayload, Result, Results } from "../../types/Game";
 import { apiSlice } from "../api/apiSlice";
 
 const endpointUrl = "/games";

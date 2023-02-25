@@ -7,50 +7,16 @@
     {
       "id": "2",
       "name": "1. de Maio"
-    },
-    {
-      "name": "8 de Setembro",
-      "id": "KkIhvqZ"
-    },
-    {
-      "name": "9 de Setembro",
-      "id": "pl3tFWU"
-    },
-    {
-      "name": "10 de Setembro",
-      "id": "aMTClcS"
     }
   ],
-  "games": [
+  "teams": [
     {
-      "date": "2023-02-22T23:54:26.115Z",
-      "place": {
-        "id": "1",
-        "name": "7 de Setembro"
-      },
-      "host": "Boca Boa",
-      "visitor": "Banguela",
-      "id": "1"
+      "id": "1",
+      "name": "Boca Boa"
     },
     {
-      "date": "2023-02-22T23:54:26.115Z",
-      "place": {
-        "id": "1",
-        "name": "7 de Setembro"
-      },
-      "host": "Boca Boa",
-      "visitor": "Banguela",
-      "id": "2"
-    },
-    {
-      "date": "2023-02-23T00:18:49.745Z",
-      "place": {
-        "id": "aMTClcS",
-        "name": "10 de Setembro"
-      },
-      "host": "Palmeiras",
-      "visitor": "Bragantino",
-      "id": "zOt949T"
+      "id": "2",
+      "name": "Banguela"
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { Place, PlacePayload, Result, Results } from "../../types/Places";
+import { Place, PlacePayload, Result, Results } from "../../types/Place";
 import { apiSlice } from "../api/apiSlice";
 
 const endpointUrl = "/places";

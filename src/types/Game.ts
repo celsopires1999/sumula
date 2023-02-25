@@ -1,4 +1,4 @@
-import { Place } from "./Places";
+import { Place } from "./Place";
 
 export type Game = {
   id: string;

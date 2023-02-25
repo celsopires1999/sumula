@@ -1,10 +1,10 @@
 import { DateTime } from "@/components/DateTime";
-import { PlaceAutocomplete } from "@/features/places/components/PlaceAutocomplete";
-import { Place, PlacePayload } from "@/types/Places";
+import { AutocompleteWithDialog } from "@/features/places/components/AutocompleteWithDialog";
+import { Place, PlacePayload } from "@/types/Place";
 import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
 import "dayjs/locale/pt-br";
 import Link from "next/link";
-import { Game } from "../../../types/Games";
+import { Game } from "../../../types/Game";
 
 type Props = {
   game: Game;
@@ -43,13 +43,16 @@ export const GameForm = ({
             </FormControl>
             {/* Place */}
             <FormControl fullWidth>
-              <PlaceAutocomplete
+              <AutocompleteWithDialog
                 id="place"
+                name="place"
                 label="Place"
-                places={places}
+                options={places}
                 value={game.place}
-                handlePlaceChange={handlePlaceChange}
-                handleCreatePlace={handleCreatePlace}
+                isLoading={isLoading}
+                isDisabled={isDisabled}
+                handleEntityChange={handlePlaceChange}
+                handleCreateEntity={handleCreatePlace}
               />
             </FormControl>
             {/* Host */}
@@ -60,9 +63,9 @@ export const GameForm = ({
                 label="Host"
                 value={game.host}
                 autoComplete="off"
+                onChange={handleChange}
                 disabled={isDisabled || isLoading}
                 inputProps={{ "data-testid": "host" }}
-                onChange={handleChange}
               />
             </FormControl>
             {/* Host */}
@@ -73,9 +76,9 @@ export const GameForm = ({
                 label="Visitor"
                 autoComplete="off"
                 value={game.visitor}
+                onChange={handleChange}
                 disabled={isDisabled || isLoading}
                 inputProps={{ "data-testid": "visitor" }}
-                onChange={handleChange}
               />
             </FormControl>
           </Grid>
@@ -89,8 +92,8 @@ export const GameForm = ({
           {/* Save */}
           <Button
             type="submit"
-            variant="contained"
             color="secondary"
+            variant="contained"
             disabled={isDisabled || isLoading}
           >
             {isLoading ? "Loading..." : "Save"}

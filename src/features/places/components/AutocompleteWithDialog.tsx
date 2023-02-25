@@ -1,4 +1,4 @@
-import { Place, PlacePayload } from "@/types/Places";
+import { Place, PlacePayload } from "@/types/Place";
 import { FilterOptionsState } from "@mui/material";
 import Autocomplete, {
   AutocompleteRenderInputParams,
@@ -13,31 +13,42 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { ChangeEvent, HTMLAttributes, SyntheticEvent, useState } from "react";
 
-export type PlaceAutocompleteProps = {
+type Entity = Place;
+type EntityPayload = PlacePayload;
+
+export type Props = {
   id: string;
-  value: Place;
+  value: Entity;
   label: string;
-  places: Place[];
-  handlePlaceChange: (value: Place) => void;
-  handleCreatePlace: (placePayload: PlacePayload) => Promise<Place | undefined>;
+  name: string;
+  options: Entity[];
+  isLoading: boolean;
+  isDisabled: boolean;
+  handleEntityChange: (value: Entity) => void;
+  handleCreateEntity: (
+    entityPayload: EntityPayload
+  ) => Promise<Entity | undefined>;
 };
 
-type PlaceOptionType = {
+type EntityOptionType = {
   inputValue?: string;
   id?: string;
   name: string;
 };
 
-const filter = createFilterOptions<PlaceOptionType>();
+const filter = createFilterOptions<EntityOptionType>();
 
-export function PlaceAutocomplete({
+export function AutocompleteWithDialog({
   id,
   value,
   label,
-  places,
-  handlePlaceChange,
-  handleCreatePlace,
-}: PlaceAutocompleteProps) {
+  name,
+  options,
+  isLoading,
+  isDisabled,
+  handleEntityChange,
+  handleCreateEntity,
+}: Props) {
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
     name: "",
@@ -52,20 +63,20 @@ export function PlaceAutocomplete({
         value={value}
         selectOnFocus
         handleHomeEndKeys
-        options={places as PlaceOptionType[]}
-        onChange={handleChangeAutocomplete}
-        renderInput={handleRenderInputAutocomplete}
-        renderOption={handleRenderOptionAutocomplete}
-        filterOptions={handleFilterOptionsAutocomplete}
-        getOptionLabel={handleGetOptionLabelAutocomplete}
+        onChange={handleChange}
+        renderInput={renderInput}
+        renderOption={renderOption}
+        getOptionLabel={optionLabel}
+        filterOptions={filterOptions}
+        options={options as EntityOptionType[]}
+        disabled={isDisabled || isLoading || !options}
       />
       <Dialog open={open} onClose={handleCloseDialog}>
-        {/* <form onSubmit={handleSubmitDialog}> */}
         <form>
-          <DialogTitle>Add a new place</DialogTitle>
+          <DialogTitle>Add New</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Did you miss any place in our list? Please, add it!
+              Did you miss any item in our list? Please, add it!
             </DialogContentText>
             <TextField
               autoFocus
@@ -90,22 +101,27 @@ export function PlaceAutocomplete({
 
   //#region     Autocomplete
 
-  function handleRenderOptionAutocomplete(
+  function renderOption(
     props: HTMLAttributes<HTMLLIElement>,
-    option: PlaceOptionType
+    option: EntityOptionType
   ) {
     return <li {...props}>{option.name}</li>;
   }
 
-  function handleRenderInputAutocomplete(
-    params: AutocompleteRenderInputParams
-  ) {
-    return <TextField {...params} label={label} required />;
+  function renderInput(params: AutocompleteRenderInputParams) {
+    return (
+      <TextField
+        {...params}
+        label={label}
+        data-testid={`${name}-input`}
+        required
+      />
+    );
   }
 
-  function handleChangeAutocomplete(
+  function handleChange(
     _event: SyntheticEvent<Element, Event>,
-    newValue: string | PlaceOptionType | null
+    newValue: string | EntityOptionType | null
   ) {
     if (typeof newValue === "string") {
       // timeout to avoid instant validation of the dialog's form.
@@ -121,16 +137,16 @@ export function PlaceAutocomplete({
         name: newValue.inputValue,
       });
     } else {
-      handlePlaceChange({
+      handleEntityChange({
         id: newValue?.id || "",
         name: newValue?.name || "",
       });
     }
   }
 
-  function handleFilterOptionsAutocomplete(
-    options: PlaceOptionType[],
-    params: FilterOptionsState<PlaceOptionType>
+  function filterOptions(
+    options: EntityOptionType[],
+    params: FilterOptionsState<EntityOptionType>
   ) {
     const filtered = filter(options, params);
 
@@ -144,7 +160,7 @@ export function PlaceAutocomplete({
     return filtered;
   }
 
-  function handleGetOptionLabelAutocomplete(option: string | PlaceOptionType) {
+  function optionLabel(option: string | EntityOptionType) {
     // e.g value selected with enter, right from the input
     if (typeof option === "string") {
       return option;
@@ -167,12 +183,12 @@ export function PlaceAutocomplete({
   }
 
   async function handleSubmitDialog() {
-    const placePayload: PlacePayload = {
+    const entityPayload: EntityPayload = {
       name: dialogValue.name,
     };
 
-    const result = await handleCreatePlace(placePayload);
-    handlePlaceChange({
+    const result = await handleCreateEntity(entityPayload);
+    handleEntityChange({
       id: result?.id ?? "",
       name: result?.name ?? "",
     });
