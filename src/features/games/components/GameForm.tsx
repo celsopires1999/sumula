@@ -1,32 +1,26 @@
 import { DateTime } from "@/components/DateTime";
-import { AutocompleteWithDialog } from "@/features/places/components/AutocompleteWithDialog";
-import { Place, PlacePayload } from "@/types/Place";
+import { AutocompletePlace } from "@/components/AutcompletePlace";
 import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
 import "dayjs/locale/pt-br";
 import Link from "next/link";
 import { Game } from "../../../types/Game";
+import { Place } from "@/types/Place";
+import { AutocompleteTeam } from "@/components/AutcompleteTeam";
+import { Team } from "@/types/Team";
 
 type Props = {
   game: Game;
-  places: Place[];
   isLoading?: boolean;
   isDisabled?: boolean;
-  handleDateChange: (value: Date | undefined) => void;
-  handlePlaceChange: (value: Place | undefined) => void;
+  handleChange: (name: string, value: Date | Place | Team | undefined) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleCreatePlace: (placePayload: PlacePayload) => Promise<Place | undefined>;
 };
 export const GameForm = ({
   game,
-  places,
   isLoading = false,
   isDisabled = false,
-  handleSubmit,
   handleChange,
-  handleDateChange,
-  handleCreatePlace,
-  handlePlaceChange,
+  handleSubmit,
 }: Props) => {
   return (
     <Box p={2}>
@@ -38,47 +32,44 @@ export const GameForm = ({
               <DateTime
                 value={game.date}
                 label="Game Day"
-                handleDateChange={handleDateChange}
+                name="date"
+                handleFieldChange={handleChange}
               />
             </FormControl>
             {/* Place */}
             <FormControl fullWidth>
-              <AutocompleteWithDialog
+              <AutocompletePlace
                 id="place"
                 name="place"
                 label="Place"
-                options={places}
                 value={game.place}
                 isLoading={isLoading}
                 isDisabled={isDisabled}
-                handleEntityChange={handlePlaceChange}
-                handleCreateEntity={handleCreatePlace}
+                handleChange={handleChange}
               />
             </FormControl>
             {/* Host */}
             <FormControl fullWidth>
-              <TextField
-                required
+              <AutocompleteTeam
+                id="host"
                 name="host"
                 label="Host"
                 value={game.host}
-                autoComplete="off"
-                onChange={handleChange}
-                disabled={isDisabled || isLoading}
-                inputProps={{ "data-testid": "host" }}
+                isLoading={isLoading}
+                isDisabled={isDisabled}
+                handleChange={handleChange}
               />
             </FormControl>
             {/* Host */}
             <FormControl fullWidth>
-              <TextField
-                required
+              <AutocompleteTeam
+                id="visitor"
                 name="visitor"
                 label="Visitor"
-                autoComplete="off"
                 value={game.visitor}
-                onChange={handleChange}
-                disabled={isDisabled || isLoading}
-                inputProps={{ "data-testid": "visitor" }}
+                isLoading={isLoading}
+                isDisabled={isDisabled}
+                handleChange={handleChange}
               />
             </FormControl>
           </Grid>

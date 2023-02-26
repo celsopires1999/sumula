@@ -10,15 +10,16 @@ import "dayjs/locale/pt-br";
 export type DateTimeProps = {
   value: Date;
   label: string;
-  handleDateChange: (value: Date | undefined) => void;
+  name: string;
+  handleFieldChange: (name: string, value: Date | undefined) => void;
 };
 
 export function DateTime(props: DateTimeProps) {
-  const { label, handleDateChange } = props;
+  const { name, label, handleFieldChange: handleDateChange } = props;
   const value = fromDateToDayjs(props.value);
 
   function handleOnChangePicker(value: dayjs.Dayjs | null) {
-    handleDateChange(value?.toDate());
+    handleDateChange(name, value?.toDate());
   }
 
   function fromDateToDayjs(value: Date) {

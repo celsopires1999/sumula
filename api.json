@@ -7,6 +7,22 @@
     {
       "id": "2",
       "name": "1. de Maio"
+    },
+    {
+      "name": "8 de Setembro",
+      "id": "-UWfrt0"
+    },
+    {
+      "name": "Uberlândia",
+      "id": "Z72_XFF"
+    },
+    {
+      "name": "Jacózinho",
+      "id": "n7itbem"
+    },
+    {
+      "name": "Belo Horizonte",
+      "id": "wyhipLm"
     }
   ],
   "teams": [
@@ -17,6 +33,120 @@
     {
       "id": "2",
       "name": "Banguela"
+    },
+    {
+      "name": "Só Bebe",
+      "id": "WqdyB3s"
+    },
+    {
+      "name": "Jacózinho",
+      "id": "anqzlgS"
+    },
+    {
+      "name": "Atético Mineiro",
+      "id": "stPM-qI"
+    },
+    {
+      "name": "Ferroviária",
+      "id": "Gmtnx4N"
+    }
+  ],
+  "games": [
+    {
+      "date": "2023-10-25T13:00:00.000Z",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
+      "host": {
+        "id": "1",
+        "name": "Boca Boa"
+      },
+      "visitor": {
+        "id": "WqdyB3s",
+        "name": "Só Bebe"
+      },
+      "id": "1"
+    },
+    {
+      "date": "2023-10-25T13:00:00.000Z",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
+      "host": {
+        "id": "1",
+        "name": "Boca Boa"
+      },
+      "visitor": {
+        "id": "WqdyB3s",
+        "name": "Só Bebe"
+      },
+      "id": "NtfYkZn"
+    },
+    {
+      "date": "2023-10-26T13:00:00.000Z",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
+      "host": {
+        "id": "1",
+        "name": "Boca Boa"
+      },
+      "visitor": {
+        "id": "WqdyB3s",
+        "name": "Só Bebe"
+      },
+      "id": "hVKkMrb"
+    },
+    {
+      "date": "2023-02-26T04:00:55.370Z",
+      "place": {
+        "id": "wyhipLm",
+        "name": "Belo Horizonte"
+      },
+      "host": {
+        "id": "stPM-qI",
+        "name": "Atético Mineiro"
+      },
+      "visitor": {
+        "id": "Gmtnx4N",
+        "name": "Ferroviária"
+      },
+      "id": "hBJJf4N"
+    },
+    {
+      "date": "2023-02-24T04:13:00.000Z",
+      "place": {
+        "id": "1",
+        "name": "7 de Setembro"
+      },
+      "host": {
+        "id": "1",
+        "name": "Boca Boa"
+      },
+      "visitor": {
+        "id": "WqdyB3s",
+        "name": "Só Bebe"
+      },
+      "id": "QoZJSlu"
+    },
+    {
+      "date": "2023-02-26T04:18:56.141Z",
+      "place": {
+        "id": "-UWfrt0",
+        "name": "8 de Setembro"
+      },
+      "host": {
+        "id": "2",
+        "name": "Banguela"
+      },
+      "visitor": {
+        "id": "WqdyB3s",
+        "name": "Só Bebe"
+      },
+      "id": "IVOQDcu"
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { Place, PlacePayload } from "@/types/Place";
+import { Team, TeamPayload } from "@/types/Team";
 import { FilterOptionsState } from "@mui/material";
 import Autocomplete, {
   AutocompleteRenderInputParams,
@@ -13,18 +14,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { ChangeEvent, HTMLAttributes, SyntheticEvent, useState } from "react";
 
-type Entity = Place;
-type EntityPayload = PlacePayload;
+type Entity = Place | Team;
+type EntityPayload = PlacePayload | TeamPayload;
 
 export type Props = {
   id: string;
   value: Entity;
   label: string;
   name: string;
-  options: Entity[];
+  options?: Entity[];
   isLoading: boolean;
   isDisabled: boolean;
-  handleEntityChange: (value: Entity) => void;
+  handleChangeEntity: (name: string, value: Entity) => void;
   handleCreateEntity: (
     entityPayload: EntityPayload
   ) => Promise<Entity | undefined>;
@@ -43,61 +44,16 @@ export function AutocompleteWithDialog({
   value,
   label,
   name,
-  options,
+  options = [],
   isLoading,
   isDisabled,
-  handleEntityChange,
+  handleChangeEntity,
   handleCreateEntity,
 }: Props) {
   const [open, toggleOpen] = useState(false);
   const [dialogValue, setDialogValue] = useState({
     name: "",
   });
-
-  return (
-    <>
-      <Autocomplete
-        id={id}
-        freeSolo
-        clearOnBlur
-        value={value}
-        selectOnFocus
-        handleHomeEndKeys
-        onChange={handleChange}
-        renderInput={renderInput}
-        renderOption={renderOption}
-        getOptionLabel={optionLabel}
-        filterOptions={filterOptions}
-        options={options as EntityOptionType[]}
-        disabled={isDisabled || isLoading || !options}
-      />
-      <Dialog open={open} onClose={handleCloseDialog}>
-        <form>
-          <DialogTitle>Add New</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Did you miss any item in our list? Please, add it!
-            </DialogContentText>
-            <TextField
-              autoFocus
-              id="name"
-              type="text"
-              label="name"
-              margin="dense"
-              variant="standard"
-              autoComplete="off"
-              value={dialogValue.name}
-              onChange={handleChangeDialogName}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button onClick={handleSubmitDialog}>Add</Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </>
-  );
 
   //#region     Autocomplete
 
@@ -137,7 +93,7 @@ export function AutocompleteWithDialog({
         name: newValue.inputValue,
       });
     } else {
-      handleEntityChange({
+      handleChangeEntity(name, {
         id: newValue?.id || "",
         name: newValue?.name || "",
       });
@@ -188,7 +144,7 @@ export function AutocompleteWithDialog({
     };
 
     const result = await handleCreateEntity(entityPayload);
-    handleEntityChange({
+    handleChangeEntity(name, {
       id: result?.id ?? "",
       name: result?.name ?? "",
     });
@@ -205,4 +161,49 @@ export function AutocompleteWithDialog({
   }
 
   //#endregion  Dialog
+
+  return (
+    <>
+      <Autocomplete
+        id={id}
+        freeSolo
+        clearOnBlur
+        value={value}
+        selectOnFocus
+        handleHomeEndKeys
+        onChange={handleChange}
+        renderInput={renderInput}
+        renderOption={renderOption}
+        getOptionLabel={optionLabel}
+        filterOptions={filterOptions}
+        options={options as EntityOptionType[]}
+        disabled={isDisabled || isLoading || !options}
+      />
+      <Dialog open={open} onClose={handleCloseDialog}>
+        <form>
+          <DialogTitle>Add New</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Did you miss any item in our list? Please, add it!
+            </DialogContentText>
+            <TextField
+              autoFocus
+              id="name"
+              type="text"
+              label="name"
+              margin="dense"
+              variant="standard"
+              autoComplete="off"
+              value={dialogValue.name}
+              onChange={handleChangeDialogName}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button onClick={handleSubmitDialog}>Add</Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </>
+  );
 }
