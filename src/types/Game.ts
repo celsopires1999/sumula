@@ -10,7 +10,7 @@ export type Game = {
 };
 
 export type GamePayload = {
-  date: string;
+  date: Date;
   place: Place;
   host: Team;
   visitor: Team;
