@@ -11,9 +11,9 @@ export type Game = {
 
 export type GamePayload = {
   date: Date;
-  place: Place;
-  host: Team;
-  visitor: Team;
+  place_id: string;
+  host_id: string;
+  visitor_id: string;
 };
 
 export type Result = Game;

@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Place {
+  id String @id @default(uuid())
+
+  name String
+
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+  game       Game[]
+
+  @@index([name])
+  @@map("places")
+}
+
+model Team {
+  id String @id @default(uuid())
+
+  name String
+
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+  host       Game[]   @relation("host")
+  Visitor    Game[]   @relation("visitor")
+
+  @@index([name])
+  @@map("teams")
+}
+
+model Game {
+  id String @id @default(uuid())
+
+  date DateTime
+
+  place    Place  @relation(fields: [place_id], references: [id])
+  place_id String
+
+  host    Team   @relation("host", fields: [host_id], references: [id])
+  host_id String
+
+  visitor    Team   @relation("visitor", fields: [visitor_id], references: [id])
+  visitor_id String
+
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+
+  @@map("games")
+}

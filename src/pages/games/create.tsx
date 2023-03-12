@@ -28,10 +28,11 @@ function GameCreatePage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const gamePayload: GamePayload = {
-      date: gameState.date.toJSON(),
-      place: gameState.place,
-      host: gameState.host,
-      visitor: gameState.visitor,
+      // date: gameState.date.toJSON(),
+      date: gameState.date,
+      place_id: gameState.place.id,
+      host_id: gameState.host.id,
+      visitor_id: gameState.visitor.id,
     };
 
     try {

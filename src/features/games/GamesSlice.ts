@@ -7,8 +7,8 @@ export const initialState: Game = {
   id: "",
   date: new Date(),
   place: { id: "", name: "" },
-  host: "",
-  visitor: "",
+  host: { id: "", name: "" },
+  visitor: { id: "", name: "" },
 };
 
 function getGames() {

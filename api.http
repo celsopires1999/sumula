@@ -5,3 +5,52 @@
 ### List ###
 GET http://localhost:8000/games
 Content-Type: application/json
+
+### API Next ###
+GET http://localhost:3000/api/hello
+Content-Type: application/json
+
+### API Next ###
+GET http://localhost:3000/api/places
+Content-Type: application/json
+
+
+### Criar um Game ###
+POST http://localhost:3000/api/games
+Content-Type: application/json
+
+{
+    "date": "2023-03-10 22:00:00",
+    "place_id": "4eaf504c-2afc-4233-8bf8-36e4a5b3c5ed",
+    "host_id": "741efae5-cc10-4e7d-bd26-a6d6fd19d26a",
+    "visitor_id": "9e02ea59-4c4a-4e4a-94fc-543018a091f2"
+}
+
+### Alterar um Game ###
+PUT http://localhost:3000/api/games/21094449-71ca-4ee3-8a1f-c3dee6210e90
+Content-Type: application/json
+
+{
+    "date": "2023-03-12 10:00:00",
+    "place_id": "4eaf504c-2afc-4233-8bf8-36e4a5b3c5ed",
+    "host_id": "741efae5-cc10-4e7d-bd26-a6d6fd19d26a",
+    "visitor_id": "9e02ea59-4c4a-4e4a-94fc-543018a091f2"
+}
+
+### Pegar um Game ###
+GET http://localhost:3000/api/games/21094449-71ca-4ee3-8a1f-c3dee6210e90
+Content-Type: application/json
+
+
+### Criar Team ###
+POST http://localhost:3000/api/teams
+Content-Type: application/json
+
+{
+    "name": "Faz Me Rir"
+}
+
+### Pegar Teams ###
+GET http://localhost:3000/api/teams
+Content-Type: application/json
+
