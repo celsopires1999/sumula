@@ -2,12 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Game } from "@/types/Game";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Game | { message: string }>
 ) {
-  const prisma = new PrismaClient();
+  // const prisma = new PrismaClient();
 
   const { query } = req;
   const id = query.id as string;
@@ -32,7 +33,7 @@ export default async function handler(
 }
 
 async function update(prisma: PrismaClient, id: string, body: any) {
-  const updatedGame = await prisma.game.update({
+  const updatedGame = await prisma.gameModel.update({
     where: {
       id: id,
     },
@@ -48,7 +49,7 @@ async function update(prisma: PrismaClient, id: string, body: any) {
 }
 
 async function findUnique(prisma: PrismaClient, id: string) {
-  const model = await prisma.game.findUnique({
+  const model = await prisma.gameModel.findUnique({
     where: { id },
     include: {
       host: true,

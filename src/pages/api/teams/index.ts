@@ -2,12 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Results, Team, TeamPayload } from "@/types/Team";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Results | Team | { message: string }>
 ) {
-  const prisma = new PrismaClient();
+  // const prisma = new PrismaClient();
 
   switch (req.method) {
     case "POST":
@@ -29,7 +30,7 @@ export default async function handler(
 }
 
 async function findMany(prisma: PrismaClient): Promise<Team[]> {
-  const models = await prisma.team.findMany();
+  const models = await prisma.teamModel.findMany();
 
   return models.map((team) => ({
     id: team.id,
@@ -42,7 +43,7 @@ async function create(prisma: PrismaClient, body: any) {
     name: body.name,
   };
 
-  const savedTeam = await prisma.team.create({
+  const savedTeam = await prisma.teamModel.create({
     data: teamData,
   });
 

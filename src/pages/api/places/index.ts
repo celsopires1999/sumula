@@ -2,12 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Place, PlacePayload, Results } from "@/types/Place";
 import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Results | Place | { message: string }>
 ) {
-  const prisma = new PrismaClient();
+  // const prisma = new PrismaClient();
 
   switch (req.method) {
     case "POST":
@@ -29,7 +30,7 @@ export default async function handler(
 }
 
 async function findMany(prisma: PrismaClient): Promise<Place[]> {
-  const models = await prisma.place.findMany();
+  const models = await prisma.placeModel.findMany();
 
   return models.map((place) => ({
     id: place.id,
@@ -42,7 +43,7 @@ async function create(prisma: PrismaClient, body: any) {
     name: body.name,
   };
 
-  const savedPlace = await prisma.place.create({
+  const savedPlace = await prisma.placeModel.create({
     data: placeData,
   });
 

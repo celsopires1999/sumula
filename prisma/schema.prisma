@@ -10,45 +10,45 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Place {
+model PlaceModel {
   id String @id @default(uuid())
 
   name String
 
-  created_at DateTime @default(now())
-  update_at  DateTime @updatedAt
-  game       Game[]
+  created_at DateTime    @default(now())
+  update_at  DateTime    @updatedAt
+  game       GameModel[]
 
   @@index([name])
   @@map("places")
 }
 
-model Team {
+model TeamModel {
   id String @id @default(uuid())
 
   name String
 
-  created_at DateTime @default(now())
-  update_at  DateTime @updatedAt
-  host       Game[]   @relation("host")
-  Visitor    Game[]   @relation("visitor")
+  created_at DateTime    @default(now())
+  update_at  DateTime    @updatedAt
+  host       GameModel[] @relation("host")
+  Visitor    GameModel[] @relation("visitor")
 
   @@index([name])
   @@map("teams")
 }
 
-model Game {
+model GameModel {
   id String @id @default(uuid())
 
   date DateTime
 
-  place    Place  @relation(fields: [place_id], references: [id])
+  place    PlaceModel @relation(fields: [place_id], references: [id])
   place_id String
 
-  host    Team   @relation("host", fields: [host_id], references: [id])
+  host    TeamModel @relation("host", fields: [host_id], references: [id])
   host_id String
 
-  visitor    Team   @relation("visitor", fields: [visitor_id], references: [id])
+  visitor    TeamModel @relation("visitor", fields: [visitor_id], references: [id])
   visitor_id String
 
   created_at DateTime @default(now())

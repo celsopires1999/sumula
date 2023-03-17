@@ -1,13 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import { GamePayload, Game } from "@/types/Game";
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/utils/db";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Game | { message: string }>
 ) {
-  const prisma = new PrismaClient();
+  // const prisma = new PrismaClient();
 
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -20,11 +21,11 @@ export default async function handler(
     visitor_id: req.body.visitor_id,
   };
 
-  const savedGame = await prisma.game.create({
+  const savedGame = await prisma.gameModel.create({
     data: gameData,
   });
 
-  const model = await prisma.game.findUnique({
+  const model = await prisma.gameModel.findUnique({
     where: { id: savedGame.id },
     include: {
       host: true,
