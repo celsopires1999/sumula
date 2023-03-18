@@ -2,11 +2,11 @@ import { Game, GamePayload } from "@/types/Game";
 import { Box, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { GameForm } from "@/features/games/components/GameForm";
+import { GameForm } from "@/frontend/src/features/games/components/GameForm";
 import {
   initialState as gameInitialState,
   useCreateGameMutation,
-} from "@/features/games/GamesSlice";
+} from "@/frontend/src/features/games/GamesSlice";
 import { Place } from "@/types/Place";
 import { Team } from "@/types/Team";
 

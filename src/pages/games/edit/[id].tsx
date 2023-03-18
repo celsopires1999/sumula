@@ -1,9 +1,9 @@
-import { GameForm } from "@/features/games/components/GameForm";
+import { GameForm } from "@/frontend/src/features/games/components/GameForm";
 import {
   initialState as gameInitialState,
   useGetGameQuery,
   useUpdateGameMutation,
-} from "@/features/games/GamesSlice";
+} from "@/frontend/src/features/games/GamesSlice";
 import { Game, GamePayload } from "@/types/Game";
 import { Place } from "@/types/Place";
 import { Team } from "@/types/Team";

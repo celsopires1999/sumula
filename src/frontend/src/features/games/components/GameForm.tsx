@@ -1,11 +1,11 @@
-import { DateTime } from "@/components/DateTime";
-import { AutocompletePlace } from "@/components/AutcompletePlace";
+import { DateTime } from "@/frontend/src/components/DateTime";
+import { AutocompletePlace } from "@/frontend/src/components/AutcompletePlace";
 import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
 import "dayjs/locale/pt-br";
 import Link from "next/link";
 import { Game } from "../../../types/Game";
 import { Place } from "@/types/Place";
-import { AutocompleteTeam } from "@/components/AutcompleteTeam";
+import { AutocompleteTeam } from "@/frontend/src/components/AutcompleteTeam";
 import { Team } from "@/types/Team";
 
 type Props = {

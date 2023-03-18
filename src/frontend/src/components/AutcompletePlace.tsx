@@ -1,7 +1,7 @@
 import {
   useCreatePlaceMutation,
   useGetPlacesQuery,
-} from "@/features/places/PlacesSlice";
+} from "@/frontend/src/features/places/PlacesSlice";
 import { Place, PlacePayload } from "@/types/Place";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";

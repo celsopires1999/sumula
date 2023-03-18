@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Results, Team, TeamPayload } from "@/types/Team";
 import { PrismaClient } from "@prisma/client";
-import { prisma } from "@/utils/db";
+import { prisma } from "@/backend/src/utils/db";
 
 export default async function handler(
   req: NextApiRequest,

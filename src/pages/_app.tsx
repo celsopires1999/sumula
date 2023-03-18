@@ -1,13 +1,13 @@
-import { Layout } from "@/components/Layout";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { Layout } from "@/frontend/src/components/Layout";
+import { useAppTheme } from "@/frontend/src/hooks/useAppTheme";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import createEmotionCache from "../utils/createEmotionCache";
+import createEmotionCache from "../frontend/src/utils/createEmotionCache";
 import { Provider } from "react-redux";
-import { setupStore } from "../app-store/store";
+import { setupStore } from "../frontend/src/app-store/store";
 import { SnackbarProvider } from "notistack";
 
 // Client-side cache, shared for the whole session of the user in the browser.

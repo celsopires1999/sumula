@@ -3,7 +3,7 @@ import { AutocompleteWithDialog } from "./AutocompleteWithDialog";
 import {
   useCreateTeamMutation,
   useGetTeamsQuery,
-} from "@/features/teams/TeamSlice";
+} from "@/frontend/src/features/teams/TeamSlice";
 import { Team, TeamPayload } from "@/types/Team";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";

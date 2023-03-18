@@ -11,7 +11,9 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   // Add more setup options before each test is run
   // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  setupFilesAfterEnv: ["./src/backend/@seedwork/domain/tests/validations.ts"],
+  setupFilesAfterEnv: [
+    "./src/backend/src/@seedwork/domain/tests/validations.ts",
+  ],
 
   testEnvironment: "jest-environment-jsdom",
 };

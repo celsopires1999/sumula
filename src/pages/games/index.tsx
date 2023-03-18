@@ -1,4 +1,4 @@
-import { GamesTable } from "../../features/games/components/GamesTable";
+import { GamesTable } from "../../frontend/src/features/games/components/GamesTable";
 function GamesPage() {
   return <GamesTable />;
 }
