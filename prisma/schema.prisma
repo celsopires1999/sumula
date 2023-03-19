@@ -5,9 +5,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "sqlite"
+//   url      = "file:./dev.db
+// }
+
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model PlaceModel {
@@ -21,6 +26,18 @@ model PlaceModel {
 
   @@index([name])
   @@map("places")
+}
+
+model PlayerModel {
+  id String @id @default(uuid())
+
+  name String
+
+  created_at DateTime @default(now())
+  update_at  DateTime @updatedAt
+
+  @@index([name])
+  @@map("players")
 }
 
 model TeamModel {
