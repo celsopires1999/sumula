@@ -6,8 +6,7 @@ export class PlayerRules {
   @MaxLength(255)
   @IsString()
   @IsNotEmpty()
-  //@ts-expect-error
-  name: string;
+  name!: string;
 
   constructor({ name }: PlayerProps) {
     Object.assign(this, { name });

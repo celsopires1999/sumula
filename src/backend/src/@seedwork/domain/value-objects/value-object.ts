@@ -31,7 +31,7 @@ export abstract class ValueObject<Value = any> {
   toString = () => {
     if (typeof this._value !== "object" || this._value === null) {
       try {
-        //@ts-expect-error
+        //@ts-ignore
         return this._value.toString();
       } catch (e) {
         return this._value + "";

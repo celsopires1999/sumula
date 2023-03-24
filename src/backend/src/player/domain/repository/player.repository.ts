@@ -1,9 +1,9 @@
-import { Player, PlayerId } from "../player";
+import { Player, PlayerId } from "../entities/player";
 import {
   SearchParams as DefaultSearchParams,
   SearchResult as DefaultSearchResult,
   SearchableRepositoryInterface,
-} from "../../../../@seedwork/domain/repository/repository-contracts";
+} from "../../../@seedwork/domain/repository/repository-contracts";
 
 export namespace PlayerRepository {
   export type Filter = string;

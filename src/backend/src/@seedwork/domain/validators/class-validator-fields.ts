@@ -6,18 +6,17 @@ import ValidatorFieldsInterface, {
 export abstract class ClassValidatorFields<PropsValidated>
   implements ValidatorFieldsInterface<PropsValidated>
 {
-  //@ts-expect-error
-  errors: FieldsErrors = null;
-  //@ts-expect-error
-  validatedData: PropsValidated = null;
+  errors: FieldsErrors = {};
+  validatedData!: PropsValidated;
   validate(data: any): boolean {
     const errors = validateSync(data);
     if (errors.length) {
       this.errors = {};
       for (const error of errors) {
         const field = error.property;
-        //@ts-expect-error
-        this.errors[field] = Object.values(error.constraints);
+        this.errors[field] = error.constraints
+          ? Object.values(error.constraints)
+          : [""];
       }
     } else {
       this.validatedData = data;
