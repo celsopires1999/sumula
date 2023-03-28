@@ -36,8 +36,8 @@ export namespace PlayerRepository {
     static create(
       props: Omit<SearchProps<Filter>, "filter"> & {
         filter?: {
-          name?: string;
-        };
+          name?: string | null;
+        } | null;
       } = {}
     ) {
       return new SearchParams({
