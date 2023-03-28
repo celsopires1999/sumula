@@ -67,3 +67,10 @@ Content-Type: application/json
 {
     "name": ""
 }
+
+
+### Buscar por name e type ###
+GET http://localhost:3000/api/players?filter[name]=MaRiA&filter[type]=1&page=1&per_page=15
+
+### Obter uma lista ###
+GET http://localhost:3000/api/players

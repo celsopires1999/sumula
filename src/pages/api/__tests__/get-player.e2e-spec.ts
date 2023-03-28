@@ -6,15 +6,15 @@ describe("Get Player API (e2e)", () => {
   describe("/api/players/id (GET)", () => {
     describe("should give a response error with 422/404 when id is invalid or not found", () => {
       const arrange = [
-        // {
-        //   label: 'INVALID',
-        //   id: 'fake id',
-        //   expected: {
-        //     statusCode: 422,
-        //     error: 'Unprocessable Entity',
-        //     message: 'Validation failed (uuid v4 is expected)',
-        //   },
-        // },
+        {
+          label: "INVALID",
+          id: "fake id",
+          expected: {
+            statusCode: 422,
+            error: "Unprocessable Entity",
+            message: "Validation failed (uuid v4 is expected)",
+          },
+        },
         {
           label: "NOT FOUND",
           id: "d0ba5077-fb6d-406f-bd05-8c521ba9425a",

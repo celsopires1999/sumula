@@ -50,7 +50,7 @@ describe("Player Unit Test", () => {
     expect(foundPlayer.toJSON()).toEqual(expectedPlayer.toJSON());
   });
 
-  it("should throw an error when palyer is not found", async () => {
+  it("should throw an error when player is not found", async () => {
     const entity = new Player({ name: "John Doe" });
     prismaMock.playerModel.findUniqueOrThrow.mockRejectedValue(
       new Prisma.PrismaClientKnownRequestError("Not Found", {
