@@ -1,8 +1,8 @@
-import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
-import { GetPlayerUseCase } from "./get-player.use-case";
+import NotFoundError from "../../../@seedwork/domain/errors/not-found.error";
 import prisma from "../../../utils/db";
 import { Player } from "../../domain/entities/player";
-import NotFoundError from "../../../@seedwork/domain/errors/not-found.error";
+import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
+import { GetPlayerUseCase } from "./get-player.use-case";
 
 const { PlayerRepository } = PlayerPrisma;
 

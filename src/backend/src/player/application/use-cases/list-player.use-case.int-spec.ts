@@ -1,12 +1,12 @@
-import { ListPlayersUseCase } from "./list-player.use-case";
-import { Player } from "../../domain/entities/player";
-import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
-import { PlayerOutputMapper } from "../dto/player-output";
 import prisma from "../../../utils/db";
+import PlayerRepository from "../../domain/repository/player.repository";
+import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
+import { ListPlayerFixture } from "./fixtures";
+import { ListPlayersUseCase } from "./list-player.use-case";
 
 describe("ListPlayersUseCase Integration Tests", () => {
   let useCase: ListPlayersUseCase.UseCase;
-  let repository: PlayerPrisma.PlayerRepository;
+  let repository: PlayerRepository.Repository;
 
   beforeEach(async () => {
     await prisma.playerModel.deleteMany();
@@ -18,76 +18,41 @@ describe("ListPlayersUseCase Integration Tests", () => {
     await prisma.playerModel.deleteMany();
   });
 
-  it("should return output sorted by name when input param is empty", async () => {
-    const players = Player.fake()
-      .thePlayers(2)
-      .withName((index) => `John Doe${index.toString().padStart(2, "0")}`)
-      .build();
+  describe("should return players ordered by name when query is empty", () => {
+    const { arrange, entitiesMap } = ListPlayerFixture.arrange();
+    const entities = Object.values(entitiesMap);
 
-    await repository.bulkInsert(players);
-    const output = await useCase.execute({});
-    expect(output).toEqual({
-      items: [...players].map((i) => i.toJSON()),
-      total: 2,
-      current_page: 1,
-      per_page: 15,
-      last_page: 1,
+    beforeEach(async () => {
+      await prisma.playerModel.deleteMany();
+      await repository.bulkInsert(entities);
     });
+
+    afterEach(async () => {
+      await prisma.playerModel.deleteMany();
+    });
+
+    test.each(arrange)(
+      "when query_params is {page: $send_data.page, per_page: $send_data.per_page}",
+      async ({ send_data, expected }) => {
+        const output = await useCase.execute(send_data);
+        expect(output).toEqual(expected);
+      }
+    );
   });
 
   describe("should search applying filter by name, sort and paginate", () => {
-    const castMembers = [
-      Player.fake().aPlayer().withName("test").build(),
-      Player.fake().aPlayer().withName("a").build(),
-      Player.fake().aPlayer().withName("TEST").build(),
-      Player.fake().aPlayer().withName("e").build(),
-      Player.fake().aPlayer().withName("TeSt").build(),
-    ];
-
-    let arrange = [
-      {
-        input: {
-          page: 1,
-          per_page: 2,
-          sort: "name",
-          filter: { name: "TEST" },
-        },
-        output: {
-          items: [castMembers[0], castMembers[4]].map(
-            PlayerOutputMapper.toOutput
-          ),
-          total: 3,
-          current_page: 1,
-          per_page: 2,
-          last_page: 2,
-        },
-      },
-      {
-        input: {
-          page: 2,
-          per_page: 2,
-          sort: "name",
-          filter: { name: "TEST" },
-        },
-        output: {
-          items: [castMembers[2]].map(PlayerOutputMapper.toOutput),
-          total: 3,
-          current_page: 2,
-          per_page: 2,
-          last_page: 2,
-        },
-      },
-    ];
+    const { arrange, entitiesMap } = ListPlayerFixture.arrangeUnsorted();
+    const players = Object.values(entitiesMap);
 
     beforeEach(async () => {
-      await repository.bulkInsert(castMembers);
+      await repository.bulkInsert(players);
     });
 
     test.each(arrange)(
       "when value is $search_params",
-      async ({ input, output: expectedOutput }) => {
-        const output = await useCase.execute(input);
-        expect(output).toEqual(expectedOutput);
+      async ({ send_data, expected }) => {
+        const output = await useCase.execute(send_data);
+        expect(output).toEqual(expected);
       }
     );
   });

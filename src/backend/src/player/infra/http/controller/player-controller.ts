@@ -3,8 +3,13 @@ import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
 import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation-error";
 import CreatePlayerUseCase from "../../../application/use-cases/create-player.use-case";
 import GetPlayerUseCase from "../../../application/use-cases/get-player.use-case";
+import ListPlayerUseCase from "../../../application/use-cases/list-player.use-case";
 import { CreatePlayerDto } from "../dto/create-player.dto";
-import { PlayerPresenter } from "../presenter/player.presenter";
+import { SearchPlayerDto } from "../dto/search-player.dto";
+import {
+  PlayerCollectionPresenter,
+  PlayerPresenter,
+} from "../presenter/player.presenter";
 
 export type Response = {
   status: number;
@@ -89,5 +94,23 @@ export class PlayerController {
         error: "Not Found",
       },
     };
+  }
+
+  async search(
+    listUseCase: ListPlayerUseCase.UseCase,
+    searchParams: SearchPlayerDto
+  ) {
+    try {
+      const output = await listUseCase.execute(searchParams);
+      return {
+        status: 200,
+        body: new PlayerCollectionPresenter(output),
+      };
+    } catch (e) {
+      return {
+        status: 500,
+        body: JSON.stringify(e),
+      };
+    }
   }
 }

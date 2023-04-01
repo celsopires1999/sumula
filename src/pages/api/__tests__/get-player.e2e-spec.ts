@@ -1,9 +1,16 @@
-// import server from "nextjs-http-supertest";
 import request from "supertest";
 import server from "../../../backend/src/tests/server";
+import prisma from "../../../backend/src/utils/db";
 
 describe("Get Player API (e2e)", () => {
   describe("/api/players/id (GET)", () => {
+    beforeEach(async () => {
+      await prisma.playerModel.deleteMany();
+    });
+
+    afterEach(async () => {
+      await prisma.playerModel.deleteMany();
+    });
     describe("should give a response error with 422/404 when id is invalid or not found", () => {
       const arrange = [
         {

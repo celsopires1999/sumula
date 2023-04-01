@@ -1,12 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { SearchPlayerDto } from "../../../backend/src/player/infra/http/dto/search-player.dto";
-import type { NextApiRequest, NextApiResponse } from "next";
 import {
   controller,
   createUseCase,
-  // } from "../../../backend/src/player/infra/http/controller/player-provider";
+  listUseCase,
 } from "@/backend/src/player/infra/http/controller/player-provider";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { CreatePlayerDto } from "../../../backend/src/player/infra/http/dto/create-player.dto";
+import { SearchPlayerDto } from "../../../backend/src/player/infra/http/dto/search-player.dto";
+import { instanceToPlain } from "class-transformer";
 
 export default async function playersHandler(
   req: NextApiRequest,
@@ -36,10 +37,11 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
 async function get(req: NextApiRequest, res: NextApiResponse) {
   const { query } = req;
 
-  if (Object.keys(query).length === 0) {
-    res.status(200).json("quero tudo");
-  } else {
-    const searchPlayerDto = new SearchPlayerDto(query);
-    res.status(200).json(searchPlayerDto);
-  }
+  // if (Object.keys(query).length === 0) {
+  //   res.status(200).json("quero tudo");
+  // } else {
+  const searchPlayerDto = new SearchPlayerDto(query);
+  const response = await controller.search(listUseCase, searchPlayerDto);
+  res.status(response.status).json(instanceToPlain(response.body));
+  // }
 }

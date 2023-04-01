@@ -1,10 +1,9 @@
-import { prismaMock } from "../../../../utils/singleton";
 import { PlayerModel, Prisma } from "@prisma/client";
-import { Player, PlayerId } from "../../../domain/entities/player";
-import { PlayerPrisma } from "./player-prisma";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-
-const { PlayerRepository } = PlayerPrisma;
+import { prismaMock } from "../../../../utils/singleton";
+import { Player, PlayerId } from "../../../domain/entities/player";
+import PlayerRepository from "../../../domain/repository/player.repository";
+import { PlayerPrisma } from "./player-prisma";
 
 describe("Player Unit Test", () => {
   it("should insert a player", async () => {
@@ -17,7 +16,7 @@ describe("Player Unit Test", () => {
     };
     prismaMock.playerModel.create.mockResolvedValue(model);
 
-    const repository = new PlayerRepository();
+    const repository = new PlayerPrisma.PlayerRepository();
     expect(repository.insert(entity)).resolves.not.toThrow();
   });
 
@@ -27,7 +26,7 @@ describe("Player Unit Test", () => {
       new Error("database error")
     );
 
-    const repository = new PlayerRepository();
+    const repository = new PlayerPrisma.PlayerRepository();
     expect(repository.insert(entity)).rejects.toThrow("database error");
   });
 
@@ -44,24 +43,33 @@ describe("Player Unit Test", () => {
       { name: entity.name },
       new PlayerId(entity.id)
     );
-    const repository = new PlayerRepository();
+    const repository = new PlayerPrisma.PlayerRepository();
     const foundPlayer = await repository.findById(entity.id);
 
     expect(foundPlayer.toJSON()).toEqual(expectedPlayer.toJSON());
   });
 
   it("should throw an error when player is not found", async () => {
-    const entity = new Player({ name: "John Doe" });
-    prismaMock.playerModel.findUniqueOrThrow.mockRejectedValue(
-      new Prisma.PrismaClientKnownRequestError("Not Found", {
-        code: "P2025",
-        clientVersion: "v1",
-      })
-    );
+    const error = new Prisma.PrismaClientKnownRequestError("Not Found", {
+      code: "P2025",
+      clientVersion: "v1",
+    });
 
-    const repository = new PlayerRepository();
+    const entity = new Player({ name: "John Doe" });
+    prismaMock.playerModel.findUniqueOrThrow.mockRejectedValue(error);
+
+    const repository = new PlayerPrisma.PlayerRepository();
     expect(repository.findById(entity.id)).rejects.toThrow(
       new NotFoundError(`Entity not found using ID ${entity.id}`)
     );
+  });
+
+  it("should throw an error by searching", async () => {
+    const error = new Error("Generic Error");
+    prismaMock.$transaction.mockRejectedValue(error);
+    const repository = new PlayerPrisma.PlayerRepository();
+    expect(
+      repository.search(PlayerRepository.SearchParams.create())
+    ).rejects.toThrow(error);
   });
 });
