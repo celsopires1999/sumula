@@ -1,6 +1,6 @@
 import { validate as uuidValidate } from "uuid";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation-error";
+import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation.error";
 import CreatePlayerUseCase from "../../../application/use-cases/create-player.use-case";
 import GetPlayerUseCase from "../../../application/use-cases/get-player.use-case";
 import ListPlayerUseCase from "../../../application/use-cases/list-player.use-case";

@@ -1,5 +1,5 @@
 import AggregateRoot from "../../../@seedwork/domain/entities/aggregate-root";
-import { EntityValidationError } from "../../../@seedwork/domain/errors/validation-error";
+import { EntityValidationError } from "../../../@seedwork/domain/errors/validation.error";
 import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo";
 import PlayerValidatorFactory from "../validators/player.validator";
 import { PlayerFakeBuilder } from "./player-fake-builder";

@@ -1,3 +1,4 @@
+import DuplicatedError from "@/backend/src/@seedwork/domain/errors/duplicated.error";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
 import prisma from "../../../../utils/db";
 import { Player } from "../../../domain/entities/player";
@@ -13,15 +14,56 @@ describe("Player Integration Test", () => {
     repository = new PlayerPrisma.PlayerRepository();
     await prisma.playerModel.deleteMany();
   });
-  afterEach(async () => {
-    await prisma.playerModel.deleteMany();
-  });
 
   it("should create a player", async () => {
-    const entity = new Player({ name: "John Doe" });
+    const entity = Player.fake().aPlayer().build();
     await repository.insert(entity);
     const createdPlayer = await repository.findById(entity.id);
     expect(createdPlayer.toJSON()).toEqual(entity.toJSON());
+  });
+
+  it("should throw an error on creating when a player exists already", async () => {
+    const entity = Player.fake().aPlayer().build();
+    await repository.insert(entity);
+    expect(repository.insert(entity)).rejects.toThrow(
+      new DuplicatedError(`Entity duplicated with ID ${entity.id}`)
+    );
+  });
+
+  it("should update a player", async () => {
+    const entity = Player.fake().aPlayer().build();
+    await repository.insert(entity);
+
+    entity.update("John Doe");
+    await repository.update(entity);
+
+    let entityFound = await repository.findById(entity.id);
+    expect(entity.toJSON()).toStrictEqual(entityFound.toJSON());
+  });
+
+  it("should throw an error on updating when player is not found", async () => {
+    const entity = Player.fake().aPlayer().build();
+
+    expect(repository.update(entity)).rejects.toThrow(
+      new NotFoundError(`Entity not found using ID ${entity.id}`)
+    );
+  });
+
+  it("should delete a player", async () => {
+    const entity = Player.fake().aPlayer().build();
+    await repository.insert(entity);
+    await repository.delete(entity.id);
+    expect(repository.findById(entity.id)).rejects.toThrow(
+      new NotFoundError(`Entity not found using ID ${entity.id}`)
+    );
+  });
+
+  it("should throw an error on deleting when player is not found", async () => {
+    const entity = Player.fake().aPlayer().build();
+
+    expect(repository.delete(entity.id)).rejects.toThrow(
+      new NotFoundError(`Entity not found using ID ${entity.id}`)
+    );
   });
 
   it("should find a player by id", async () => {
@@ -42,6 +84,17 @@ describe("Player Integration Test", () => {
     await repository.bulkInsert(players);
     const foundPlayers = await repository.findAll();
     expect(JSON.stringify(foundPlayers)).toEqual(JSON.stringify(players));
+  });
+
+  it("should find a player by name", async () => {
+    const player = Player.fake().aPlayer().build();
+    await repository.insert(player);
+    expect(repository.exists(player.name)).toBeTruthy();
+  });
+
+  it("should not find a player by name", async () => {
+    const player = Player.fake().aPlayer().build();
+    expect(await repository.exists(player.name)).toBeFalsy();
   });
 
   describe("search method", () => {

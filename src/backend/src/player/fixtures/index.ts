@@ -1,5 +1,5 @@
 import { SortDirection } from "@/backend/src/@seedwork/domain/repository/repository-contracts";
-import { Player } from "../../../domain/entities/player";
+import { Player } from "../domain/entities/player";
 
 export class PlayerFixture {
   static keysInResponse() {
@@ -78,6 +78,63 @@ export class PlayerFixture {
       },
     ];
   }
+
+  static arrangeForUseCaseEntityValidationError() {
+    return [
+      {
+        label: "EMPTY",
+        send_data: {},
+        expected: {
+          error: {
+            name: [
+              "name should not be empty",
+              "name must be a string",
+              "name must be shorter than or equal to 255 characters",
+            ],
+          },
+        },
+      },
+      {
+        label: "NAME_UNDEFINED",
+        send_data: {
+          name: undefined,
+        },
+        expected: {
+          error: {
+            name: [
+              "name should not be empty",
+              "name must be a string",
+              "name must be shorter than or equal to 255 characters",
+            ],
+          },
+        },
+      },
+      {
+        label: "NAME_NULL",
+        send_data: {
+          name: null,
+        },
+        expected: {
+          error: {
+            name: [
+              "name should not be empty",
+              "name must be a string",
+              "name must be shorter than or equal to 255 characters",
+            ],
+          },
+        },
+      },
+      {
+        label: "NAME_EMPTY",
+        send_data: {
+          name: "",
+        },
+        expected: {
+          error: { name: ["name should not be empty"] },
+        },
+      },
+    ];
+  }
 }
 
 export class CreatePlayerFixture {
@@ -91,6 +148,24 @@ export class CreatePlayerFixture {
 
   static arrangeForEntityValidationError() {
     return PlayerFixture.arrangeForEntityValidationError();
+  }
+}
+
+export class UpdatePlayerFixture {
+  static keysInResponse() {
+    return PlayerFixture.keysInResponse();
+  }
+
+  static arrangeForSave() {
+    return PlayerFixture.arrangeForSave();
+  }
+
+  static arrangeForEntityValidationError() {
+    return PlayerFixture.arrangeForEntityValidationError();
+  }
+
+  static arrangeForUseCaseEntityValidationError() {
+    return PlayerFixture.arrangeForUseCaseEntityValidationError();
   }
 }
 

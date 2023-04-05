@@ -2,29 +2,27 @@ import NotFoundError from "../../../@seedwork/domain/errors/not-found.error";
 import prisma from "../../../utils/db";
 import { Player } from "../../domain/entities/player";
 import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
-import { GetPlayerUseCase } from "./get-player.use-case";
+import { DeletePlayerUseCase } from "./delete-player.use-case";
 
 const { PlayerRepository } = PlayerPrisma;
 
-describe("GetPlayerUseCase Integration Tests", () => {
+describe("DeletePlayerUseCase Integration Tests", () => {
   let repository: PlayerPrisma.PlayerRepository;
-  let useCase: GetPlayerUseCase.UseCase;
+  let useCase: DeletePlayerUseCase.UseCase;
 
   beforeEach(async () => {
     await prisma.playerModel.deleteMany();
     repository = new PlayerRepository();
-    useCase = new GetPlayerUseCase.UseCase(repository);
+    useCase = new DeletePlayerUseCase.UseCase(repository);
   });
 
-  it("should get a player", async () => {
-    const entity = new Player({ name: "John Doe" });
+  it("should delete a player", async () => {
+    const entity = Player.fake().aPlayer().build();
     repository.insert(entity);
-    const output = await useCase.execute({ id: entity.id });
-    const foundPlayer = await repository.findById(output.id);
-    expect(output.name).toBe(entity.name);
-    expect(output.id).toBe(entity.id);
-    expect(foundPlayer.id).toBe(entity.id);
-    expect(foundPlayer.name).toBe(entity.name);
+    await useCase.execute({ id: entity.id });
+    expect(repository.findById(entity.id)).rejects.toThrow(
+      new NotFoundError(`Entity not found using ID ${entity.id}`)
+    );
   });
 
   it("should throw an error when player is not found", async () => {

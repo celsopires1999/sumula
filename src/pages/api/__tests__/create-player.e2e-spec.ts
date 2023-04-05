@@ -1,5 +1,5 @@
 import request from "supertest";
-import { CreatePlayerFixture } from "../../../backend/src/player/application/use-cases/fixtures";
+import { CreatePlayerFixture } from "../../../backend/src/player/fixtures";
 import server from "../../../backend/src/tests/server";
 import prisma from "../../../backend/src/utils/db";
 

@@ -1,17 +1,105 @@
+import DuplicatedError from "@/backend/src/@seedwork/domain/errors/duplicated.error";
 import { PlayerModel, Prisma } from "@prisma/client";
 import { LoadEntityError } from "../../../../@seedwork/domain/errors/load-entity.error";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation-error";
+import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation.error";
 import prisma from "../../../../utils/db";
 import { Player, PlayerId } from "../../../domain/entities/player";
 import { PlayerRepository as PlayerRepositoryContract } from "../../../domain/repository/player.repository";
 
 export namespace PlayerPrisma {
   export class PlayerRepository implements PlayerRepositoryContract.Repository {
-    exists(name: string): Promise<boolean> {
-      throw new Error("Method not implemented.");
-    }
     sortableFields: string[] = ["name"];
+
+    async insert(entity: Player): Promise<void> {
+      try {
+        await prisma.playerModel.create({
+          data: entity.toJSON(),
+        });
+      } catch (e) {
+        if (
+          e instanceof Prisma.PrismaClientKnownRequestError &&
+          e.code === "P2002"
+        ) {
+          throw new DuplicatedError(`Entity duplicated with ID ${entity.id}`);
+        } else {
+          throw e;
+        }
+      }
+    }
+
+    async bulkInsert(entities: Player[]): Promise<void> {
+      const data = entities.map((e) => e.toJSON());
+      const batchPayload = await prisma.playerModel.createMany({
+        data,
+      });
+
+      if (batchPayload.count !== data.length) {
+        throw new Error(
+          `Not all players have been created. Requested: ${data.length}, Done: ${batchPayload.count}`
+        );
+      }
+    }
+
+    async update(entity: Player): Promise<void> {
+      try {
+        await prisma.playerModel.update({
+          where: { id: entity.id },
+          data: { ...entity.toJSON() },
+        });
+      } catch (e) {
+        throw this.checkNotFoundError(entity.id, e);
+      }
+    }
+
+    async delete(id: string | PlayerId): Promise<void> {
+      const _id = typeof id === "string" ? id : id.value;
+      try {
+        await prisma.playerModel.delete({ where: { id: _id } });
+      } catch (e) {
+        throw this.checkNotFoundError(_id, e);
+      }
+    }
+
+    async findById(id: string | PlayerId): Promise<Player> {
+      let _id = `${id}`;
+      if (typeof id !== "string") {
+        _id = id.value;
+      }
+      const model = await this._get(_id);
+      return PlayerModelMapper.toEntity(model);
+    }
+
+    private async _get(id: string) {
+      try {
+        return await prisma.playerModel.findUniqueOrThrow({
+          where: { id },
+        });
+      } catch (e) {
+        throw this.checkNotFoundError(id, e);
+      }
+    }
+
+    private checkNotFoundError(id: string, e: unknown) {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === "P2025"
+      ) {
+        return new NotFoundError(`Entity not found using ID ${id}`);
+      } else {
+        return e;
+      }
+    }
+
+    async findAll(): Promise<Player[]> {
+      const models = await prisma.playerModel.findMany();
+      return models.map((m) => PlayerModelMapper.toEntity(m));
+    }
+
+    async exists(name: string): Promise<boolean> {
+      const model = await prisma.playerModel.findFirst({ where: { name } });
+      return model ? true : false;
+    }
 
     async search(
       props: PlayerRepositoryContract.SearchParams
@@ -53,62 +141,6 @@ export namespace PlayerPrisma {
         sort: props.sort,
         sort_dir: props.sort_dir,
       });
-    }
-
-    async insert(entity: Player): Promise<void> {
-      await prisma.playerModel.create({
-        data: entity.toJSON(),
-      });
-    }
-    async bulkInsert(entities: Player[]): Promise<void> {
-      const data = entities.map((e) => e.toJSON());
-      const batchPayload = await prisma.playerModel.createMany({
-        data,
-      });
-
-      if (batchPayload.count !== data.length) {
-        throw new Error(
-          `Not all players have been created. Requested: ${data.length}, Done: ${batchPayload.count}`
-        );
-      }
-    }
-
-    async findById(id: string | PlayerId): Promise<Player> {
-      let _id = `${id}`;
-      if (typeof id !== "string") {
-        _id = id.value;
-      }
-      const model = await this._get(_id);
-      return PlayerModelMapper.toEntity(model);
-    }
-
-    private async _get(id: string) {
-      try {
-        return await prisma.playerModel.findUniqueOrThrow({
-          where: { id },
-        });
-      } catch (e) {
-        if (
-          e instanceof Prisma.PrismaClientKnownRequestError &&
-          e.code === "P2025"
-        ) {
-          throw new NotFoundError(`Entity not found using ID ${id}`);
-        } else {
-          throw e;
-        }
-      }
-    }
-
-    async findAll(): Promise<Player[]> {
-      const models = await prisma.playerModel.findMany();
-      return models.map((m) => PlayerModelMapper.toEntity(m));
-    }
-
-    update(entity: Player): Promise<void> {
-      throw new Error("Method not implemented.");
-    }
-    delete(id: string | PlayerId): Promise<void> {
-      throw new Error("Method not implemented.");
     }
   }
 

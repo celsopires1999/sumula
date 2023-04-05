@@ -4,7 +4,7 @@ import server from "../../../backend/src/tests/server";
 import qs from "qs";
 import request from "supertest";
 import { PlayerPrisma } from "../../../backend/src/player/infra/db/prisma/player-prisma";
-import { ListPlayerFixture } from "../../../backend/src/player/application/use-cases/fixtures";
+import { ListPlayerFixture } from "../../../backend/src/player/fixtures";
 import { PlayerCollectionPresenter } from "../../../backend/src/player/infra/http/presenter/player.presenter";
 import prisma from "../../../backend/src/utils/db";
 

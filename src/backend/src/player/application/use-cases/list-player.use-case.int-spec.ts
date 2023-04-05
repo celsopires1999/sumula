@@ -1,7 +1,7 @@
 import prisma from "../../../utils/db";
 import PlayerRepository from "../../domain/repository/player.repository";
 import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
-import { ListPlayerFixture } from "./fixtures";
+import { ListPlayerFixture } from "../../fixtures";
 import { ListPlayersUseCase } from "./list-player.use-case";
 
 describe("ListPlayersUseCase Integration Tests", () => {
@@ -14,10 +14,6 @@ describe("ListPlayersUseCase Integration Tests", () => {
     useCase = new ListPlayersUseCase.UseCase(repository);
   });
 
-  afterEach(async () => {
-    await prisma.playerModel.deleteMany();
-  });
-
   describe("should return players ordered by name when query is empty", () => {
     const { arrange, entitiesMap } = ListPlayerFixture.arrange();
     const entities = Object.values(entitiesMap);
@@ -25,10 +21,6 @@ describe("ListPlayersUseCase Integration Tests", () => {
     beforeEach(async () => {
       await prisma.playerModel.deleteMany();
       await repository.bulkInsert(entities);
-    });
-
-    afterEach(async () => {
-      await prisma.playerModel.deleteMany();
     });
 
     test.each(arrange)(

@@ -1,4 +1,4 @@
-import { EntityValidationError } from "../errors/validation-error";
+import { EntityValidationError } from "../errors/validation.error";
 import { ClassValidatorFields } from "../validators/class-validator-fields";
 import { FieldsErrors } from "../validators/validator-fields-interface";
 
