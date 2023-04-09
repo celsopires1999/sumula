@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import {
   controller,
   getUseCase,
+  updateUseCase,
 } from "../../../backend/src/player/infra/http/controller/player-provider";
 
 export default async function playersHandler(
@@ -14,7 +15,7 @@ export default async function playersHandler(
 
   switch (req.method) {
     case "PUT":
-      console.log("PUT");
+      await put(req, res, id);
       break;
     case "GET":
       await get(req, res, id);
@@ -27,5 +28,10 @@ export default async function playersHandler(
 
 async function get(req: NextApiRequest, res: NextApiResponse, id: string) {
   const response = await controller.findOne(getUseCase, id);
+  res.status(response.status).json(response.body);
+}
+
+async function put(req: NextApiRequest, res: NextApiResponse, id: string) {
+  const response = await controller.update(updateUseCase, req.body, id);
   res.status(response.status).json(response.body);
 }

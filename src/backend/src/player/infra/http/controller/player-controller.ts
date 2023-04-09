@@ -1,11 +1,14 @@
+import { instanceToPlain } from "class-transformer";
 import { validate as uuidValidate } from "uuid";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
 import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation.error";
 import CreatePlayerUseCase from "../../../application/use-cases/create-player.use-case";
 import GetPlayerUseCase from "../../../application/use-cases/get-player.use-case";
 import ListPlayerUseCase from "../../../application/use-cases/list-player.use-case";
+import UpdatePlayerUseCase from "../../../application/use-cases/update-player.use-case";
 import { CreatePlayerDto } from "../dto/create-player.dto";
 import { SearchPlayerDto } from "../dto/search-player.dto";
+import { UpdatePlayerDto } from "../dto/update-player.dto";
 import {
   PlayerCollectionPresenter,
   PlayerPresenter,
@@ -30,19 +33,41 @@ export class PlayerController {
       };
     } catch (e) {
       if (e instanceof EntityValidationError) {
-        response = {
-          status: 422,
-          body: {
-            message: Object.values(e.error).flat(),
-            statusCode: 422,
-            error: "Unprocessable Entity",
-          },
-        };
+        response = this.entityValidationError(e);
       } else {
-        response = {
-          status: 500,
-          body: JSON.stringify(e),
-        };
+        response = this.internalServerError(e);
+      }
+    }
+    return response;
+  }
+
+  async update(
+    updateUseCase: UpdatePlayerUseCase.UseCase,
+    updatePlayerDto: UpdatePlayerDto,
+    id: string
+  ) {
+    let response: Response;
+
+    if (!uuidValidate(id)) {
+      return this.invalidUuidError();
+    }
+
+    try {
+      const output = await updateUseCase.execute({
+        id,
+        ...updatePlayerDto,
+      });
+      response = {
+        status: 200,
+        body: { data: instanceToPlain(new PlayerPresenter(output)) },
+      };
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        response = this.notFoundError(e);
+      } else if (e instanceof EntityValidationError) {
+        response = this.entityValidationError(e);
+      } else {
+        response = this.internalServerError(e);
       }
     }
     return response;
@@ -65,13 +90,25 @@ export class PlayerController {
       if (e instanceof NotFoundError) {
         response = this.notFoundError(e);
       } else {
-        response = {
-          status: 500,
-          body: JSON.stringify(e),
-        };
+        response = this.internalServerError(e);
       }
     }
     return response;
+  }
+
+  async search(
+    listUseCase: ListPlayerUseCase.UseCase,
+    searchParams: SearchPlayerDto
+  ) {
+    try {
+      const output = await listUseCase.execute(searchParams);
+      return {
+        status: 200,
+        body: instanceToPlain(new PlayerCollectionPresenter(output)),
+      };
+    } catch (e) {
+      return this.internalServerError(e);
+    }
   }
 
   private invalidUuidError() {
@@ -96,21 +133,21 @@ export class PlayerController {
     };
   }
 
-  async search(
-    listUseCase: ListPlayerUseCase.UseCase,
-    searchParams: SearchPlayerDto
-  ) {
-    try {
-      const output = await listUseCase.execute(searchParams);
-      return {
-        status: 200,
-        body: new PlayerCollectionPresenter(output),
-      };
-    } catch (e) {
-      return {
-        status: 500,
-        body: JSON.stringify(e),
-      };
-    }
+  private entityValidationError(e: EntityValidationError) {
+    return {
+      status: 422,
+      body: {
+        message: Object.values(e.error).flat(),
+        statusCode: 422,
+        error: "Unprocessable Entity",
+      },
+    };
+  }
+
+  private internalServerError(e: unknown) {
+    return {
+      status: 500,
+      body: JSON.stringify(e),
+    };
   }
 }
