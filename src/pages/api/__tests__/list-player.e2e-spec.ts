@@ -1,12 +1,12 @@
 import { instanceToPlain } from "class-transformer";
 import { PlayerRepository } from "../../../backend/src/player/domain/repository/player.repository";
-import server from "../../../backend/src/tests/server";
+import server from "../../../backend/src/@seedwork/tests/server";
 import qs from "qs";
 import request from "supertest";
 import { PlayerPrisma } from "../../../backend/src/player/infra/db/prisma/player-prisma";
 import { ListPlayerFixture } from "../../../backend/src/player/fixtures";
 import { PlayerCollectionPresenter } from "../../../backend/src/player/infra/http/presenter/player.presenter";
-import prisma from "../../../backend/src/utils/db";
+import prisma from "../../../backend/src/@seedwork/utils/db";
 
 describe("List Player (e2e)", () => {
   describe("/api/players (GET)", () => {
@@ -19,10 +19,6 @@ describe("List Player (e2e)", () => {
         await prisma.playerModel.deleteMany();
         playerRepo = new PlayerPrisma.PlayerRepository();
         await playerRepo.bulkInsert(entities);
-      });
-
-      afterEach(async () => {
-        await prisma.playerModel.deleteMany();
       });
 
       test.each(arrange)(

@@ -1,5 +1,5 @@
 import NotFoundError from "../../../@seedwork/domain/errors/not-found.error";
-import prisma from "../../../utils/db";
+import prisma from "../../../@seedwork/utils/db";
 import { Player } from "../../domain/entities/player";
 import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
 import { DeletePlayerUseCase } from "./delete-player.use-case";

@@ -39,3 +39,4 @@ next-env.d.ts
 
 # dev environment
 .zsh_history
+docker-compose.override.yaml

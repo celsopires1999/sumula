@@ -1,6 +1,6 @@
 import { PlayerModel, Prisma } from "@prisma/client";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import { prismaMock } from "../../../../utils/singleton";
+import { prismaMock } from "../../../../@seedwork/utils/singleton";
 import { Player, PlayerId } from "../../../domain/entities/player";
 import PlayerRepository from "../../../domain/repository/player.repository";
 import { PlayerPrisma } from "./player-prisma";

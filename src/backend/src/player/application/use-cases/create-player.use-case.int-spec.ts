@@ -1,5 +1,5 @@
 import { EntityValidationError } from "@/backend/src/@seedwork/domain/errors/validation.error";
-import prisma from "../../../utils/db";
+import prisma from "../../../@seedwork/utils/db";
 import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
 import { CreatePlayerUseCase } from "./create-player.use-case";
 import PlayerExistsError from "./errors/player-exists.error";

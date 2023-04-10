@@ -4,10 +4,10 @@ import {
   createUseCase,
   listUseCase,
 } from "@/backend/src/player/infra/http/controller/player-provider";
-import type { NextApiRequest, NextApiResponse } from "next";
-import { CreatePlayerDto } from "../../../backend/src/player/infra/http/dto/create-player.dto";
-import { SearchPlayerDto } from "../../../backend/src/player/infra/http/dto/search-player.dto";
+import { CreatePlayerDto } from "@/backend/src/player/infra/http/dto/create-player.dto";
+import { SearchPlayerDto } from "@/backend/src/player/infra/http/dto/search-player.dto";
 import { instanceToPlain } from "class-transformer";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function playersHandler(
   req: NextApiRequest,

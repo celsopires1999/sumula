@@ -1,14 +1,15 @@
+import { Player } from "@/backend/src/player/domain/entities/player";
+import { PlayerFixture } from "@/backend/src/player/fixtures";
+import { PlayerPrisma } from "@/backend/src/player/infra/db/prisma/player-prisma";
+import { PlayerPresenter } from "@/backend/src/player/infra/http/presenter/player.presenter";
+import { instanceToPlain } from "class-transformer";
 import request from "supertest";
-import server from "../../../backend/src/tests/server";
-import prisma from "../../../backend/src/utils/db";
+import server from "../../../backend/src/@seedwork/tests/server";
+import prisma from "../../../backend/src/@seedwork/utils/db";
 
 describe("Get Player API (e2e)", () => {
   describe("/api/players/id (GET)", () => {
     beforeEach(async () => {
-      await prisma.playerModel.deleteMany();
-    });
-
-    afterEach(async () => {
       await prisma.playerModel.deleteMany();
     });
     describe("should give a response error with 422/404 when id is invalid or not found", () => {
@@ -39,6 +40,21 @@ describe("Get Player API (e2e)", () => {
           .expect(expected.statusCode)
           .expect(expected);
       });
+    });
+
+    it("should get a player", async () => {
+      const playerRepo = new PlayerPrisma.PlayerRepository();
+      const createdPlayer = Player.fake().aPlayer().build();
+      await playerRepo.insert(createdPlayer);
+      const res = await request(server)
+        .get(`/api/players/${createdPlayer.id}`)
+        .expect(200);
+      const keysInResponse = PlayerFixture.keysInResponse();
+      expect(Object.keys(res.body)).toStrictEqual(["data"]);
+      expect(Object.keys(res.body.data)).toStrictEqual(keysInResponse);
+      const presenter = new PlayerPresenter(createdPlayer.toJSON());
+      const serialized = instanceToPlain(presenter);
+      expect(res.body.data).toStrictEqual(serialized);
     });
   });
 });

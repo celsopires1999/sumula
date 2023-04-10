@@ -3,8 +3,8 @@ import PlayerRepository from "@/backend/src/player/domain/repository/player.repo
 import { UpdatePlayerFixture } from "@/backend/src/player/fixtures";
 import { PlayerPrisma } from "@/backend/src/player/infra/db/prisma/player-prisma";
 import { PlayerPresenter } from "@/backend/src/player/infra/http/presenter/player.presenter";
-import server from "@/backend/src/tests/server";
-import prisma from "@/backend/src/utils/db";
+import server from "@/backend/src/@seedwork/tests/server";
+import prisma from "@/backend/src/@seedwork/utils/db";
 import { instanceToPlain } from "class-transformer";
 import request from "supertest";
 

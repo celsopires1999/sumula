@@ -1,6 +1,6 @@
 import DuplicatedError from "@/backend/src/@seedwork/domain/errors/duplicated.error";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import prisma from "../../../../utils/db";
+import prisma from "../../../../@seedwork/utils/db";
 import { Player } from "../../../domain/entities/player";
 import { PlayerFakeBuilder } from "../../../domain/entities/player-fake-builder";
 import { PlayerRepository } from "../../../domain/repository/player.repository";

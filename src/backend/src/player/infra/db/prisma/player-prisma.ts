@@ -3,7 +3,7 @@ import { PlayerModel, Prisma } from "@prisma/client";
 import { LoadEntityError } from "../../../../@seedwork/domain/errors/load-entity.error";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
 import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation.error";
-import prisma from "../../../../utils/db";
+import prisma from "../../../../@seedwork/utils/db";
 import { Player, PlayerId } from "../../../domain/entities/player";
 import { PlayerRepository as PlayerRepositoryContract } from "../../../domain/repository/player.repository";
 

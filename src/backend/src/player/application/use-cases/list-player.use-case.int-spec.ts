@@ -1,4 +1,4 @@
-import prisma from "../../../utils/db";
+import prisma from "../../../@seedwork/utils/db";
 import PlayerRepository from "../../domain/repository/player.repository";
 import { PlayerPrisma } from "../../infra/db/prisma/player-prisma";
 import { ListPlayerFixture } from "../../fixtures";

@@ -2,7 +2,9 @@ import { instanceToPlain } from "class-transformer";
 import { validate as uuidValidate } from "uuid";
 import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
 import { EntityValidationError } from "../../../../@seedwork/domain/errors/validation.error";
+import { PlayerOutput } from "../../../application/dto/player-output";
 import CreatePlayerUseCase from "../../../application/use-cases/create-player.use-case";
+import DeletePlayerUseCase from "../../../application/use-cases/delete-player.use-case";
 import GetPlayerUseCase from "../../../application/use-cases/get-player.use-case";
 import ListPlayerUseCase from "../../../application/use-cases/list-player.use-case";
 import UpdatePlayerUseCase from "../../../application/use-cases/update-player.use-case";
@@ -29,14 +31,10 @@ export class PlayerController {
       const output = await createUseCase.execute(createPlayerDto);
       response = {
         status: 201,
-        body: new PlayerPresenter(output),
+        body: PlayerController.playerToResponse(output),
       };
     } catch (e) {
-      if (e instanceof EntityValidationError) {
-        response = this.entityValidationError(e);
-      } else {
-        response = this.internalServerError(e);
-      }
+      response = this.errorHandling(e);
     }
     return response;
   }
@@ -59,16 +57,26 @@ export class PlayerController {
       });
       response = {
         status: 200,
-        body: { data: instanceToPlain(new PlayerPresenter(output)) },
+        body: PlayerController.playerToResponse(output),
       };
     } catch (e) {
-      if (e instanceof NotFoundError) {
-        response = this.notFoundError(e);
-      } else if (e instanceof EntityValidationError) {
-        response = this.entityValidationError(e);
-      } else {
-        response = this.internalServerError(e);
-      }
+      response = this.errorHandling(e);
+    }
+    return response;
+  }
+
+  async remove(deleteUseCase: DeletePlayerUseCase.UseCase, id: string) {
+    let response: Response;
+
+    if (!uuidValidate(id)) {
+      return this.invalidUuidError();
+    }
+
+    try {
+      await deleteUseCase.execute({ id });
+      response = { status: 204, body: null };
+    } catch (e) {
+      response = this.errorHandling(e);
     }
     return response;
   }
@@ -84,14 +92,10 @@ export class PlayerController {
       const output = await getUseCase.execute({ id });
       response = {
         status: 200,
-        body: new PlayerPresenter(output),
+        body: PlayerController.playerToResponse(output),
       };
     } catch (e) {
-      if (e instanceof NotFoundError) {
-        response = this.notFoundError(e);
-      } else {
-        response = this.internalServerError(e);
-      }
+      response = this.errorHandling(e);
     }
     return response;
   }
@@ -122,6 +126,20 @@ export class PlayerController {
     };
   }
 
+  private errorHandling(e: unknown) {
+    let response: Response;
+
+    if (e instanceof NotFoundError) {
+      response = this.notFoundError(e);
+    } else if (e instanceof EntityValidationError) {
+      response = this.entityValidationError(e);
+    } else {
+      response = this.internalServerError(e);
+    }
+
+    return response;
+  }
+
   private notFoundError(e: NotFoundError) {
     return {
       status: 404,
@@ -149,5 +167,9 @@ export class PlayerController {
       status: 500,
       body: JSON.stringify(e),
     };
+  }
+
+  static playerToResponse(output: PlayerOutput) {
+    return { data: instanceToPlain(new PlayerPresenter(output)) };
   }
 }
