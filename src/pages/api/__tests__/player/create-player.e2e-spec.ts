@@ -1,11 +1,11 @@
+import server from "@/backend/src/@seedwork/tests/server";
+import prisma from "@/backend/src/@seedwork/utils/db";
 import { PlayerRepository } from "@/backend/src/player/domain/repository/player.repository";
+import { CreatePlayerFixture } from "@/backend/src/player/fixtures";
 import { PlayerPrisma } from "@/backend/src/player/infra/db/prisma/player-prisma";
 import { PlayerPresenter } from "@/backend/src/player/infra/http/presenter/player.presenter";
-import request from "supertest";
-import { CreatePlayerFixture } from "../../../backend/src/player/fixtures";
-import server from "../../../backend/src/@seedwork/tests/server";
-import prisma from "../../../backend/src/@seedwork/utils/db";
 import { instanceToPlain } from "class-transformer";
+import request from "supertest";
 
 describe("Create Player (e2e)", () => {
   describe("/api/players (POST)", () => {

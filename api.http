@@ -68,6 +68,19 @@ Content-Type: application/json
     "name": "Mary Doe"
 }
 
+### Alterar Player ###
+PUT http://localhost:3000/api/players/39a96bcf-fadc-465f-b205-8fe3936b54d3
+Content-Type: application/json
+
+{
+    "name": "John Doe"
+}
+
+### Obter Player ###
+GET http://localhost:3000/api/players/39a96bcf-fadc-465f-b205-8fe3936b54d3
+
+### Delete Player ###
+DELETE http://localhost:3000/api/players/6b2da36d-1e55-4f8d-b2fd-04982c5936c7
 
 ### Buscar por name e type ###
 GET http://localhost:3000/api/players?filter[name]=MaRiA&filter[type]=1&page=1&per_page=15

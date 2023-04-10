@@ -18,7 +18,7 @@ import {
 
 export type Response = {
   status: number;
-  body: any;
+  body?: any;
 };
 
 export class PlayerController {
@@ -74,7 +74,7 @@ export class PlayerController {
 
     try {
       await deleteUseCase.execute({ id });
-      response = { status: 204, body: null };
+      response = { status: 204 };
     } catch (e) {
       response = this.errorHandling(e);
     }
