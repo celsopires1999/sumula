@@ -9,7 +9,7 @@ import { PlayerRepository as PlayerRepositoryContract } from "../../../domain/re
 
 export namespace PlayerPrisma {
   export class PlayerRepository implements PlayerRepositoryContract.Repository {
-    sortableFields: string[] = ["name"];
+    sortableFields: string[] = ["name", "is_active"];
 
     async insert(entity: Player): Promise<void> {
       try {
@@ -107,14 +107,20 @@ export namespace PlayerPrisma {
       const offset = (props.page - 1) * props.per_page;
       const limit = props.per_page;
 
-      // let where: { name?: { mode: "insensitive"; contains: string } } = {};
-      // let orderBy: { name?: "asc" | "desc" } = {};
       let where: any = {};
       let orderBy: any = {};
 
-      if (props.filter && props.filter.name) {
-        where.name = { mode: "insensitive", contains: props.filter.name };
+      if (props.filter) {
+        where = {
+          ...(props.filter.name && {
+            name: { mode: "insensitive", contains: props.filter.name },
+          }),
+          ...(typeof props.filter.is_active === "boolean" && {
+            is_active: { equals: props.filter.is_active },
+          }),
+        };
       }
+
       orderBy =
         props.sort && this.sortableFields.includes(props.sort)
           ? { [props.sort]: props.sort_dir }
@@ -146,9 +152,9 @@ export namespace PlayerPrisma {
 
   export class PlayerModelMapper {
     static toEntity(model: PlayerModel) {
-      const { id, name } = model;
+      const { id, name, is_active } = model;
       try {
-        return new Player({ name }, new PlayerId(id));
+        return new Player({ name, is_active }, new PlayerId(id));
       } catch (e) {
         if (e instanceof EntityValidationError) {
           throw new LoadEntityError(e.error);

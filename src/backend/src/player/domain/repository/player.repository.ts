@@ -29,7 +29,9 @@ export namespace PlayerRepository {
 
       const filter = {
         ...(_value?.name && { name: `${_value?.name}` }),
-        ...(_value?.is_active && { is_active: _value?.is_active }),
+        ...(typeof _value?.is_active === "boolean" && {
+          is_active: _value?.is_active,
+        }),
       };
 
       this._filter = Object.keys(filter).length === 0 ? null : filter;
@@ -38,16 +40,16 @@ export namespace PlayerRepository {
     static create(
       props: Omit<SearchProps<Filter>, "filter"> & {
         filter?: {
-          name?: string | null;
-          is_active?: boolean | null;
+          name?: string;
+          is_active?: boolean;
         } | null;
       } = {}
     ) {
       return new SearchParams({
         ...props,
         filter: {
-          name: props.filter?.name || undefined,
-          is_active: props.filter?.is_active || undefined,
+          name: props.filter?.name,
+          is_active: props.filter?.is_active,
         },
       });
     }

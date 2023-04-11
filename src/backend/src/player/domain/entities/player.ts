@@ -22,7 +22,7 @@ export class Player extends AggregateRoot<
     Player.validate(props);
     super(props, entityId ?? new PlayerId());
     this.name = props.name;
-    this.is_active = props.is_active;
+    this.is_active = props.is_active ?? true;
   }
 
   get name(): string {
@@ -33,11 +33,11 @@ export class Player extends AggregateRoot<
     this.props.name = value;
   }
 
-  get is_active(): boolean | undefined {
-    return this.props.is_active;
+  get is_active(): boolean {
+    return this.props.is_active ?? true;
   }
 
-  private set is_active(value: boolean | undefined) {
+  private set is_active(value: boolean) {
     this.props.is_active = value ?? true;
   }
 

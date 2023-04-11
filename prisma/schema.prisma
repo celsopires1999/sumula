@@ -31,7 +31,8 @@ model PlaceModel {
 model PlayerModel {
   id String @id @default(uuid())
 
-  name String
+  name      String
+  is_active Boolean
 
   created_at DateTime @default(now())
   update_at  DateTime @updatedAt

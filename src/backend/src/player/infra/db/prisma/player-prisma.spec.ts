@@ -11,6 +11,7 @@ describe("Player Unit Test", () => {
     const model: PlayerModel = {
       id: entity.id,
       name: entity.name,
+      is_active: entity.is_active,
       created_at: new Date(),
       update_at: new Date(),
     };
@@ -34,6 +35,7 @@ describe("Player Unit Test", () => {
     const entity = new Player({ name: "John Doe" });
     const model: PlayerModel = {
       id: entity.id,
+      is_active: entity.is_active,
       name: entity.name,
       created_at: new Date(),
       update_at: new Date(),
