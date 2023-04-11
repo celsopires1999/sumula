@@ -1,11 +1,12 @@
-import AggregateRoot from "../../../@seedwork/domain/entities/aggregate-root";
-import { EntityValidationError } from "../../../@seedwork/domain/errors/validation.error";
-import UniqueEntityId from "../../../@seedwork/domain/value-objects/unique-entity-id.vo";
-import PlayerValidatorFactory from "../validators/player.validator";
-import { PlayerFakeBuilder } from "./player-fake-builder";
+import AggregateRoot from "@/backend/src/@seedwork/domain/entities/aggregate-root";
+import { EntityValidationError } from "@/backend/src/@seedwork/domain/errors/validation.error";
+import UniqueEntityId from "@/backend/src/@seedwork/domain/value-objects/unique-entity-id.vo";
+import { PlayerFakeBuilder } from "@/backend/src/player/domain/entities/player-fake-builder";
+import PlayerValidatorFactory from "@/backend/src/player/domain/validators/player.validator";
 
 export type PlayerProps = {
   name: string;
+  is_active?: boolean;
 };
 
 export type PlayerPropsJson = Required<{ id: string } & PlayerProps>;
@@ -20,6 +21,8 @@ export class Player extends AggregateRoot<
   constructor(public readonly props: PlayerProps, entityId?: PlayerId) {
     Player.validate(props);
     super(props, entityId ?? new PlayerId());
+    this.name = props.name;
+    this.is_active = props.is_active;
   }
 
   get name(): string {
@@ -30,9 +33,25 @@ export class Player extends AggregateRoot<
     this.props.name = value;
   }
 
+  get is_active(): boolean | undefined {
+    return this.props.is_active;
+  }
+
+  private set is_active(value: boolean | undefined) {
+    this.props.is_active = value ?? true;
+  }
+
   update(name: string) {
-    Player.validate({ name });
+    Player.validate({ ...this.props, name });
     this.name = name;
+  }
+
+  activate() {
+    this.props.is_active = true;
+  }
+
+  deactivate() {
+    this.props.is_active = false;
   }
 
   static validate(props: PlayerProps) {

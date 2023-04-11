@@ -1,7 +1,7 @@
 import { Player } from "./../player";
 
 describe("Player Integration Tests", () => {
-  describe("create method", () => {
+  describe("constructor", () => {
     it("should throw an error when name is invalid ", () => {
       expect(() => new Player({ name: null } as any)).containsErrorMessages({
         name: [
@@ -10,6 +10,7 @@ describe("Player Integration Tests", () => {
           "name must be shorter than or equal to 255 characters",
         ],
       });
+
       expect(() => new Player({ name: "" } as any)).containsErrorMessages({
         name: ["name should not be empty"],
       });
@@ -29,13 +30,19 @@ describe("Player Integration Tests", () => {
         name: ["name must be shorter than or equal to 255 characters"],
       });
     });
+
+    it("should throw an error when is_active is invalid", () => {
+      expect(() => new Player({ is_active: "" } as any)).containsErrorMessages({
+        is_active: ["is_active must be a boolean value"],
+      });
+    });
   });
 
   describe("update method", () => {
     it("should throw an error when name is invalid", () => {
       const player = new Player({
         name: "John Doe",
-      });
+      } as any);
       expect(() => player.update(null as any)).containsErrorMessages({
         name: [
           "name should not be empty",
@@ -64,6 +71,7 @@ describe("Player Integration Tests", () => {
       expect.assertions(0);
       const player = new Player({
         name: "John Doe",
+        is_active: false,
       });
       player.update("Mary Doe");
     });

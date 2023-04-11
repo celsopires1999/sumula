@@ -134,6 +134,28 @@ describe("PlayerFakeBuilder Unit Tests", () => {
     });
   });
 
+  describe("is_active prop", () => {
+    const faker = PlayerFakeBuilder.aPlayer();
+
+    it("should be a function", () => {
+      expect(typeof faker["_is_active"] === "function").toBeTruthy();
+    });
+
+    test("activate", () => {
+      const $this = faker.activate();
+      expect($this).toBeInstanceOf(PlayerFakeBuilder);
+      expect(faker["_is_active"]).toBeTruthy();
+      expect(faker.is_active).toBeTruthy();
+    });
+
+    test("deactivate", () => {
+      const $this = faker.deactivate();
+      expect($this).toBeInstanceOf(PlayerFakeBuilder);
+      expect(faker["_is_active"]).toBeFalsy();
+      expect(faker.is_active).toBeFalsy();
+    });
+  });
+
   describe("Players creation", () => {
     it("should create a player", () => {
       let player = PlayerFakeBuilder.aPlayer().build();
@@ -143,11 +165,13 @@ describe("PlayerFakeBuilder Unit Tests", () => {
       const unique_entity_id = new PlayerId();
       player = PlayerFakeBuilder.aPlayer()
         .withName("some name")
+        .deactivate()
         .withEntityId(unique_entity_id)
         .build();
       expect(player.entityId).toBe(unique_entity_id);
       expect(player.id).toBe(unique_entity_id.value);
       expect(player.name).toBe("some name");
+      expect(player.is_active).toBeFalsy();
     });
 
     it("should create many players", () => {
@@ -161,13 +185,15 @@ describe("PlayerFakeBuilder Unit Tests", () => {
       const unique_entity_id = new PlayerId();
       players = PlayerFakeBuilder.thePlayers(2)
         .withName("some name")
+        .activate()
         .withEntityId(unique_entity_id)
         .build();
 
-      players.forEach((castMember) => {
-        expect(castMember.entityId).toBe(unique_entity_id);
-        expect(castMember.id).toBe(unique_entity_id.value);
-        expect(castMember.name).toBe("some name");
+      players.forEach((player) => {
+        expect(player.entityId).toBe(unique_entity_id);
+        expect(player.id).toBe(unique_entity_id.value);
+        expect(player.name).toBe("some name");
+        expect(player.is_active).toBeTruthy();
       });
     });
   });

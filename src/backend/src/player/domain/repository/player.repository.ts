@@ -4,11 +4,12 @@ import {
   SearchResult as DefaultSearchResult,
   SearchableRepositoryInterface,
   SearchProps,
-} from "../../../@seedwork/domain/repository/repository-contracts";
+} from "@/backend/src/@seedwork/domain/repository/repository-contracts";
 
 export namespace PlayerRepository {
   export type Filter = {
     name?: string;
+    is_active?: boolean;
   };
 
   export class SearchParams extends DefaultSearchParams<Filter> {
@@ -28,6 +29,7 @@ export namespace PlayerRepository {
 
       const filter = {
         ...(_value?.name && { name: `${_value?.name}` }),
+        ...(_value?.is_active && { is_active: _value?.is_active }),
       };
 
       this._filter = Object.keys(filter).length === 0 ? null : filter;
@@ -37,6 +39,7 @@ export namespace PlayerRepository {
       props: Omit<SearchProps<Filter>, "filter"> & {
         filter?: {
           name?: string | null;
+          is_active?: boolean | null;
         } | null;
       } = {}
     ) {
@@ -44,6 +47,7 @@ export namespace PlayerRepository {
         ...props,
         filter: {
           name: props.filter?.name || undefined,
+          is_active: props.filter?.is_active || undefined,
         },
       });
     }

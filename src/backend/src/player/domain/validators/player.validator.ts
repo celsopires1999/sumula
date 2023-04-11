@@ -1,5 +1,11 @@
 import ClassValidatorFields from "../../../@seedwork/domain/validators/class-validator-fields";
-import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from "class-validator";
 import { PlayerProps } from "../entities/player";
 
 export class PlayerRules {
@@ -8,8 +14,12 @@ export class PlayerRules {
   @IsNotEmpty()
   name!: string;
 
-  constructor({ name }: PlayerProps) {
-    Object.assign(this, { name });
+  @IsBoolean()
+  @IsOptional()
+  is_active!: boolean;
+
+  constructor({ name, is_active }: PlayerProps) {
+    Object.assign(this, { name, is_active });
   }
 }
 
