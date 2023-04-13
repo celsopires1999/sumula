@@ -11,6 +11,7 @@ describe("PlayerOutputMapper Unit Tests", () => {
     expect(output).toStrictEqual({
       id: entity.id,
       name: entity.name,
+      is_active: entity.is_active,
     });
   });
 });

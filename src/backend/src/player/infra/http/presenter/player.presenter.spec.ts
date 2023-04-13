@@ -8,6 +8,7 @@ describe("PlayerPresenter Unit Tests", () => {
       const presenter = new PlayerPresenter({
         id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
         name: "test",
+        is_active: true,
       });
 
       expect(presenter.id).toBe("61cd7b66-c215-4b84-bead-9aef0911aba7");
@@ -19,23 +20,27 @@ describe("PlayerPresenter Unit Tests", () => {
     let presenter = new PlayerPresenter({
       id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
       name: "John Doe",
+      is_active: true,
     });
 
     let data = instanceToPlain(presenter);
     expect(data).toStrictEqual({
       id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
       name: "John Doe",
+      is_active: true,
     });
 
     presenter = new PlayerPresenter({
       id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
       name: "Mary Doe",
+      is_active: false,
     });
 
     data = instanceToPlain(presenter);
     expect(data).toStrictEqual({
       id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
       name: "Mary Doe",
+      is_active: false,
     });
   });
 });
@@ -46,6 +51,7 @@ describe("PlayerCollectionPresenter Unit Tests", () => {
       let player = {
         id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
         name: "Mary Doe",
+        is_active: true,
       };
       let presenter = new PlayerCollectionPresenter({
         items: [player],
@@ -69,6 +75,7 @@ describe("PlayerCollectionPresenter Unit Tests", () => {
       player = {
         id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
         name: "John Doe",
+        is_active: true,
       };
       presenter = new PlayerCollectionPresenter({
         items: [player],
@@ -97,6 +104,7 @@ describe("PlayerCollectionPresenter Unit Tests", () => {
         {
           id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
           name: "Mary Doe",
+          is_active: false,
         },
       ],
       current_page: 1,
@@ -116,6 +124,7 @@ describe("PlayerCollectionPresenter Unit Tests", () => {
         {
           id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
           name: "Mary Doe",
+          is_active: false,
         },
       ],
     });
@@ -125,6 +134,7 @@ describe("PlayerCollectionPresenter Unit Tests", () => {
         {
           id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
           name: "John Doe",
+          is_active: true,
         },
       ],
       current_page: "1" as any,
@@ -144,6 +154,7 @@ describe("PlayerCollectionPresenter Unit Tests", () => {
         {
           id: "61cd7b66-c215-4b84-bead-9aef0911aba7",
           name: "John Doe",
+          is_active: true,
         },
       ],
     });

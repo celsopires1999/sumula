@@ -11,6 +11,7 @@ export class SearchPlayerDto {
   sort_dir?: SortDirection;
   filter?: {
     name?: string;
+    is_active?: boolean;
   };
 
   constructor(query: Query) {
@@ -20,8 +21,13 @@ export class SearchPlayerDto {
       (this.sort_dir = query["sort_dir"]
         ? (query["sort_dir"] as SortDirection)
         : undefined),
-      (this.filter = query["filter[name]"]
-        ? { name: query["filter[name]"] as string }
-        : undefined);
+      (this.filter = {
+        ...(query["filter[name]"]
+          ? { name: query["filter[name]"] as string }
+          : undefined),
+        ...(query["filter[is_active]"]
+          ? { is_active: query["filter[is_active]"] === "true" }
+          : undefined),
+      });
   }
 }

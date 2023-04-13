@@ -24,7 +24,7 @@ describe("ListPlayersUseCase Integration Tests", () => {
     });
 
     test.each(arrange)(
-      "when query_params is {page: $send_data.page, per_page: $send_data.per_page}",
+      "%#) when query_params is {page: $send_data.page, per_page: $send_data.per_page}",
       async ({ send_data, expected }) => {
         const output = await useCase.execute(send_data);
         expect(output).toEqual(expected);
@@ -41,7 +41,7 @@ describe("ListPlayersUseCase Integration Tests", () => {
     });
 
     test.each(arrange)(
-      "when value is $search_params",
+      "%#) when value is $search_params",
       async ({ send_data, expected }) => {
         const output = await useCase.execute(send_data);
         expect(output).toEqual(expected);

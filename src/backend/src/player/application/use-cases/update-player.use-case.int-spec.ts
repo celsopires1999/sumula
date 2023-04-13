@@ -25,12 +25,6 @@ describe("UpdatePlayerUseCase Integration Tests", () => {
     ];
     await repository.bulkInsert(entities);
 
-    // expect(
-    //   useCase.execute({ id: entities[1].id, name: "John Doe" })
-    // ).rejects.toThrow(
-    //   new PlayerExistsError(`John Doe exists already in the players collection`)
-    // );
-
     try {
       await useCase.execute({ id: entities[1].id, name: "John Doe" });
       fail("Should throw PlayerExistsError");

@@ -22,7 +22,7 @@ describe("List Player (e2e)", () => {
       });
 
       test.each(arrange)(
-        "when query_params is {page: $send_data.page, per_page: $send_data.per_page}",
+        "%#) when query_params is {page: $send_data.page, per_page: $send_data.per_page}",
         async ({ send_data, expected }) => {
           const queryParams = new URLSearchParams(send_data as any).toString();
           const res = await request(server)
@@ -52,7 +52,7 @@ describe("List Player (e2e)", () => {
       });
 
       test.each(arrange)(
-        "when query_params is {filter: $send_data.filter, sort: $send_data.sort, page: $send_data.page, per_page: $send_data.per_page}",
+        "%#) when query_params is {filter: $send_data.filter, sort: $send_data.sort, page: $send_data.page, per_page: $send_data.per_page}",
         async ({ send_data, expected }) => {
           const queryParams = qs.stringify(send_data);
           const res = await request(server)

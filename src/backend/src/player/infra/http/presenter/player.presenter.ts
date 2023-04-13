@@ -5,10 +5,12 @@ import ListPlayersUseCase from "../../../application/use-cases/list-player.use-c
 export class PlayerPresenter {
   id: string;
   name: string;
+  is_active: boolean;
 
   constructor(output: PlayerOutput) {
     this.id = output.id;
     this.name = output.name;
+    this.is_active = output.is_active;
   }
 }
 

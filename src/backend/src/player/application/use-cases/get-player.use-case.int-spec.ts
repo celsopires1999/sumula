@@ -25,6 +25,7 @@ describe("GetPlayerUseCase Integration Tests", () => {
     expect(output.id).toBe(entity.id);
     expect(foundPlayer.id).toBe(entity.id);
     expect(foundPlayer.name).toBe(entity.name);
+    expect(foundPlayer.is_active).toBe(entity.is_active);
   });
 
   it("should throw an error when player is not found", async () => {

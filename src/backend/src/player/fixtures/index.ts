@@ -3,17 +3,18 @@ import { Player } from "../domain/entities/player";
 
 export class PlayerFixture {
   static keysInResponse() {
-    return ["id", "name"];
+    return ["id", "name", "is_active"];
   }
 
   static arrangeForSave() {
+    const entity = Player.fake().aPlayer().build();
     return [
       {
         send_data: {
-          name: "John Doe",
+          ...entity.props,
         },
         expected: {
-          name: "John Doe",
+          ...entity.props,
         },
       },
     ];
@@ -184,6 +185,7 @@ export class ListPlayerFixture {
     };
 
     const arrange = [
+      // test #0
       {
         send_data: {},
         expected: {
@@ -199,6 +201,7 @@ export class ListPlayerFixture {
           total: 4,
         },
       },
+      // test #1
       {
         send_data: {
           page: 1,
@@ -212,6 +215,7 @@ export class ListPlayerFixture {
           total: 4,
         },
       },
+      // test #2
       {
         send_data: {
           page: 2,
@@ -225,6 +229,7 @@ export class ListPlayerFixture {
           total: 4,
         },
       },
+      // test #3
       {
         send_data: {
           page: 99,
@@ -245,14 +250,15 @@ export class ListPlayerFixture {
 
   static arrangeUnsorted() {
     const entitiesMap = {
-      a: Player.fake().aPlayer().withName("a").build(),
-      AAA: Player.fake().aPlayer().withName("AAA").build(),
-      AaA: Player.fake().aPlayer().withName("AaA").build(),
-      b: Player.fake().aPlayer().withName("b").build(),
-      c: Player.fake().aPlayer().withName("c").build(),
+      a: Player.fake().aPlayer().withName("a").activate().build(),
+      AAA: Player.fake().aPlayer().withName("AAA").deactivate().build(),
+      AaA: Player.fake().aPlayer().withName("AaA").deactivate().build(),
+      b: Player.fake().aPlayer().withName("b").activate().build(),
+      c: Player.fake().aPlayer().withName("c").deactivate().build(),
     };
 
     const arrange = [
+      // test #0
       {
         send_data: {
           page: 1,
@@ -268,6 +274,7 @@ export class ListPlayerFixture {
           per_page: 2,
         },
       },
+      // test #1
       {
         send_data: {
           page: 2,
@@ -283,6 +290,7 @@ export class ListPlayerFixture {
           per_page: 2,
         },
       },
+      // test #2
       {
         send_data: {
           page: 1,
@@ -299,6 +307,7 @@ export class ListPlayerFixture {
           per_page: 2,
         },
       },
+      // test #3
       {
         send_data: {
           page: 2,
@@ -312,6 +321,54 @@ export class ListPlayerFixture {
           total: 3,
           current_page: 2,
           last_page: 2,
+          per_page: 2,
+        },
+      },
+      // test #4
+      {
+        send_data: {
+          page: 1,
+          per_page: 2,
+          sort: "is_active",
+          filter: { is_active: false },
+        },
+        expected: {
+          items: [entitiesMap.AAA.toJSON(), entitiesMap.AaA.toJSON()],
+          total: 3,
+          current_page: 1,
+          last_page: 2,
+          per_page: 2,
+        },
+      },
+      // test #5
+      {
+        send_data: {
+          page: 2,
+          per_page: 2,
+          sort: "is_active",
+          filter: { is_active: false },
+        },
+        expected: {
+          items: [entitiesMap.c.toJSON()],
+          total: 3,
+          current_page: 2,
+          last_page: 2,
+          per_page: 2,
+        },
+      },
+      // test #6
+      {
+        send_data: {
+          page: 1,
+          per_page: 2,
+          sort: "is_active",
+          filter: { is_active: true },
+        },
+        expected: {
+          items: [entitiesMap.a.toJSON(), entitiesMap.b.toJSON()],
+          total: 2,
+          current_page: 1,
+          last_page: 1,
           per_page: 2,
         },
       },
